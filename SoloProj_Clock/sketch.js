@@ -1,5 +1,6 @@
 
 let handsQuant = 15;
+let gearQuant = 2;
 let slider;
 let gearIndex;
 let localRotation = 0;
@@ -8,7 +9,9 @@ let fps = 60;
 let daySpeedField;
 let dayMoodField;
 let submitButton;
+let displayButton;
 let showText = 1;
+let userData;
 
 
 
@@ -16,7 +19,7 @@ let showText = 1;
 
 function preload() {
   clockhand = loadImage('/assets/ClockhandV2_small.png');
-  let userData = loadJSON('userData.json');
+   userData = loadJSON('userData.json');
 }
 
 //**************************************
@@ -24,7 +27,7 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   frameRate(fps);
-
+  gearQuant = (userData.DayIndex.length);
 
   displayQuestion();
   //daySpeedField.position(width/3,100);
@@ -89,20 +92,24 @@ function drawHand(handsQuant) {
 
   //localRate = 
   let rotSpeed = localRotation * localRate;
+  for (g = 0; g < gearQuant; g++) {
+    for (i = 0; i < handsQuant; i++) {
 
-  for (i = 0; i < handsQuant; i++) {
-    //gearIndex[i] = createGraphics()
-    push();
-    translate(width / 2, height / 2);
-    circle(0, 0, 20);
-    pop();
-    push();
-    translate((width / 2), (height / 2));
-    angleMode(DEGREES);
-    rotate(rotSpeed + i * 360 / handsQuant);
-    image(clockhand, 0, 0);
-    pop();
+      push();
+      translate(250 + (300 * g), 250);
+      circle(0, 0, 20);
+      angleMode(DEGREES);
+      if (g % 2 == 0) {
+        rotate(rotSpeed + i * 360 / handsQuant);
+      }
+      else {
+        rotate(1 - (rotSpeed + i * 360 / handsQuant));
 
+      }
+      image(clockhand, 0, 0);
+      pop();
+
+    }
   }
 }
 
@@ -121,6 +128,8 @@ function displayQuestion() {
   submitButton = createButton('Submit');
   submitButton.position(100, 200)
   submitButton.mousePressed(submitData);
+
+  
 }
 
 //******************** */
@@ -133,17 +142,34 @@ function submitData() {
   print('submitted ' + date);
 
   //userData
-  /*saveJSON({
-    'DayDate': date,
-    'DaySpeed': daySpeedField.value(),
-    'DayMood': dayMoodField.value()
+  /*
+  saveJSON({
+    'DayDate': date, 'DaySpeed': daySpeedField.value(), 'DayMood': dayMoodField.value()
       })
-
 */
+
+
+  print('manually append the downloaded info to your userData file');
+
   handsQuant = pow(daySpeedField.value(), 2);
 
+  
+
+  removeElements(submitButton);
+
+  displayButton = createButton('DONE');
+  displayButton.position(100, 200)
+  displayButton.mousePressed(displayClock);
+
+  
+}
+
+function displayClock(){
+  print('Done!');
   showText = 0;
+
   removeElements(dayMoodField);
   removeElements(daySpeedField);
-  removeElements(submitButton);
+  removeElements(displayButton);
+  
 }
