@@ -11,10 +11,12 @@ let submitButton;
 let showText = 1;
 
 
+
 //**************************** */
 
 function preload() {
-  clockhand = loadImage('/assets/ClockhandV2_small.png')
+  clockhand = loadImage('/assets/ClockhandV2_small.png');
+  let userData = loadJSON('userData.json');
 }
 
 //**************************************
@@ -54,15 +56,20 @@ function draw() {
 
   background(220, 220, 220);
   //handsQuant = slider.value(); //slider for display only
-  localRotation = localRotation + 60 / frameRate(); //increments rotation whilst accounting for lag 
-  drawHand(handsQuant);
+
   if (showText == 1) {
     text('How quickly did your day pass, from 1 (lowest) to 10 (highest)?', 50, 50);
     text("Today's speed: " + daySpeedField.value(), 50, 75);
 
     text('How would you rate your mood today from 1 (lowest) to 10 (highest)?', 50, 100);
     text("Today's mood: " + dayMoodField.value(), 50, 125);
+  } else {
+
+    localRotation = localRotation + 60 / frameRate(); //increments rotation whilst accounting for lag 
+    drawHand(handsQuant);
+
   }
+
 }
 
 
@@ -125,6 +132,18 @@ function submitData() {
   date = date.toDateString().slice(4);
   print('submitted ' + date);
 
+  //userData
+  /*saveJSON({
+    'DayDate': date,
+    'DaySpeed': daySpeedField.value(),
+    'DayMood': dayMoodField.value()
+      })
 
+*/
+  handsQuant = pow(daySpeedField.value(), 2);
 
+  showText = 0;
+  removeElements(dayMoodField);
+  removeElements(daySpeedField);
+  removeElements(submitButton);
 }
