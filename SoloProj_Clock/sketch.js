@@ -4,7 +4,7 @@ let gearQuant = 2;
 let slider;
 let gearIndex;
 let localRotation = 0;
-let localRate = 1;
+let localRate;
 let fps = 60;
 let daySpeedField, dayMoodField, daySigField, dayNoteField;
 let submitButton;
@@ -75,14 +75,15 @@ function draw() {
     text('How significant do you feel today was in your life,  from 1 (lowest) to 10 (highest)?', 50, 150);
     text("Today's significance: " + daySigField.value(), 50, 175);
 
-    text('Would you like to include a short note for the day (less than 3 words)?', 50, 300);
+    text('Would you like to include a short note for the day (under  5 words)?', 50, 300);
 
 
   } else {
 
     localRotation = localRotation + 60 / frameRate(); //increments rotation whilst accounting for lag 
-    drawHand(handsQuant);
+    drawHand();
 
+    
   }
 
 }
@@ -104,7 +105,7 @@ function windowResized() {
 
 
 
-function drawHand(handsQuant) {
+function drawHand() {
 
 
   for (g = 0; g < gearQuant; g++) {
@@ -114,19 +115,29 @@ function drawHand(handsQuant) {
 
     }
 
+    
+    let localHandsCount = userData.Days[g].DaySpeed
+
+    if (g == 0){
+       localRate = 1;
+    } else{
+     localRate = userData.Days[g-1].DaySpeed / localHandsCount
+  }
+
     let rotSpeed = localRotation * localRate;
+    
 
-    for (i = 0; i < handsQuant; i++) {
-
+    for (i = 0; i < localHandsCount; i++) {
+      print('Gear ' + g + ' localrate: ' + localRate);
       push();
       translate(250 + (300 * g), 250);
       circle(0, 0, 20);
       angleMode(DEGREES);
       if (g % 2 == 0) {
-        rotate(rotSpeed + i * 360 / handsQuant);
+        rotate(rotSpeed + i * 360 / localHandsCount);
       }
       else {
-        rotate(0 - (rotSpeed + i * 360 / handsQuant));
+        rotate(0 - (rotSpeed + i * 360 / localHandsCount));
 
       }
       image(clockhand, 0, 0);
@@ -181,7 +192,7 @@ function submitData() {
     'DaySpeed': daySpeedField.value(),
     'DayMood': dayMoodField.value(),
     'DaySig': daySigField.value(),
-    'Note': noteFieldEntry
+    'Note': dayNoteField.value()
   });
 
 
