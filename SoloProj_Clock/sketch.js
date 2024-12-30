@@ -12,7 +12,7 @@ let displayButton;
 let showText = 1;
 let userData;
 let clockhand;
-let motionBlur = 225;
+let motionBlur = 255;
 //TODO:
 //
 
@@ -35,21 +35,6 @@ function setup() {
 
 
   displayQuestion();
-  //daySpeedField.position(width/3,100);
-  //daySpeedField.size(500, 50);
-
-  //dayMoodField.position(width/3,200);
-  //dayMoodField.size(500,50)
-
-
-
-
-  //slider for display only
-  /*
-  slider = createSlider(1,550);
-  slider.position(width/3, height/5);
-  slider.size(250);
-  */
 
 
 
@@ -63,7 +48,7 @@ function setup() {
 function draw() {
 
   background(220, 220, 220, motionBlur);
-  //handsQuant = slider.value(); //slider for display only
+  
 
   if (showText == 1) {
     text('How quickly did your day pass, from 1 (lowest) to 10 (highest)?', 50, 50);
@@ -107,7 +92,7 @@ function windowResized() {
 
 function drawHand() {
 
-let origin;
+
 
   for (g = 0; g < gearQuant; g++) {
 
@@ -117,27 +102,28 @@ let origin;
     let localScale = pow(userData.Days[g].DaySig, 0.5) / 2 //sets the scale accoring to day significance
 
     //sets condiditions for first gear differently to subsequent gears
+    //let localOffset = 250 + (350 * g)
 
     if (g == 0) {
       localRate = 1;
-      //localScalePrevious = 1;
+      
     } else {
       localRate = userData.Days[g - 1].DaySpeed / localHandsCount //sets gear ratio to neighbour
       //localScalePrevious = pow(userData.Days[g - 1].DaySig, 0.5) / 2
     }
 
 
-    let localOffset = 250 + (350 * g)
+    
 
     let rotSpeed = (localRotation * localRate) + 0 - localScale;
     
-
+    translate((290*localScale), 0);
 
     for (i = 0; i < localHandsCount; i++) {
-
+      
       push();
 
-      translate(localOffset, 250);
+      translate(0, 250);
 
       angleMode(DEGREES);
       if (g % 2 == 0) {
@@ -149,7 +135,7 @@ let origin;
       }
       strokeWeight(1);
       stroke(0,0,0,255)
-      text(localScale, 30,30);
+      
       scale(localScale);
       image(clockhand, 0, 0);
 
@@ -248,8 +234,7 @@ function displayClock() {
   print('Done!');
   showText = 0;
 
-  removeElements(dayMoodField);
-  removeElements(daySpeedField);
-  removeElements(displayButton);
+  removeElements();
+
 
 }

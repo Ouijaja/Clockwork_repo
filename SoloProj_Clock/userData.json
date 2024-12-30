@@ -20,27 +20,7 @@
       "DayMood": 8,
       "DaySig": 2,
       "DayNote": ""
-    },
-    {
-      "DayDate": "Dec 30 2024",
-      "DaySpeed": 5,
-      "DayMood": 8,
-      "DaySig": 2,
-      "DayNote": ""
-    },
-    {
-      "DayDate": "Dec 30 2024",
-      "DaySpeed": 5,
-      "DayMood": 8,
-      "DaySig": 3,
-      "DayNote": ""
-    },
-    {
-      "DayDate": "Dec 30 2024",
-      "DaySpeed": 2,
-      "DayMood": 9,
-      "DaySig": 5,
-      "DayNote": ""
     }
+    
   ]
 }
