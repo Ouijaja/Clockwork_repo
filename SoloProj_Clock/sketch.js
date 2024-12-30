@@ -4,7 +4,7 @@ let gearQuant = 2;
 let slider;
 let gearIndex;
 let localRotation = 0;
-let localRate;
+let localRate, localScalePrevious;
 let fps = 60;
 let daySpeedField, dayMoodField, daySigField, dayNoteField;
 let submitButton;
@@ -12,7 +12,7 @@ let displayButton;
 let showText = 1;
 let userData;
 let clockhand;
-
+let motionBlur = 225;
 //TODO:
 //
 
@@ -62,7 +62,7 @@ function setup() {
 
 function draw() {
 
-  background(220, 220, 220);
+  background(220, 220, 220, motionBlur);
   //handsQuant = slider.value(); //slider for display only
 
   if (showText == 1) {
@@ -83,7 +83,7 @@ function draw() {
     localRotation = localRotation + 60 / frameRate(); //increments rotation whilst accounting for lag 
     drawHand();
 
-    
+
   }
 
 }
@@ -94,7 +94,7 @@ function draw() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
-  if(showText == true){
+  if (showText == true) {
     removeElements();
     displayQuestion();
   }
@@ -107,40 +107,65 @@ function windowResized() {
 
 function drawHand() {
 
+let origin;
 
   for (g = 0; g < gearQuant; g++) {
 
-    if (g < userData.Days.length) {
+    
+    let localHandsCount = userData.Days[g].DaySpeed //sets the number of hands according to the day speed
+    let localNotes = userData.Days[g].DayNote //gets the text for notes
+    let localScale = pow(userData.Days[g].DaySig, 0.5) / 2 //sets the scale accoring to day significance
 
+    //sets condiditions for first gear differently to subsequent gears
 
+    if (g == 0) {
+      localRate = 1;
+      //localScalePrevious = 1;
+    } else {
+      localRate = userData.Days[g - 1].DaySpeed / localHandsCount //sets gear ratio to neighbour
+      //localScalePrevious = pow(userData.Days[g - 1].DaySig, 0.5) / 2
     }
 
-    
-    let localHandsCount = userData.Days[g].DaySpeed
 
-    if (g == 0){
-       localRate = 1;
-    } else{
-     localRate = userData.Days[g-1].DaySpeed / localHandsCount
-  }
+    let localOffset = 250 + (350 * g)
 
-    let rotSpeed = localRotation * localRate;
+    let rotSpeed = (localRotation * localRate) + 0 - localScale;
     
+
 
     for (i = 0; i < localHandsCount; i++) {
-      print('Gear ' + g + ' localrate: ' + localRate);
+
       push();
-      translate(250 + (300 * g), 250);
-      circle(0, 0, 20);
+
+      translate(localOffset, 250);
+
       angleMode(DEGREES);
       if (g % 2 == 0) {
-        rotate(rotSpeed + i * 360 / localHandsCount);
+        rotate(rotSpeed + (i * 360 / localHandsCount));
       }
       else {
-        rotate(0 - (rotSpeed + i * 360 / localHandsCount));
+        rotate(0 - (rotSpeed + (i * 360 / localHandsCount)));
 
       }
+      strokeWeight(1);
+      stroke(0,0,0,255)
+      text(localScale, 30,30);
+      scale(localScale);
       image(clockhand, 0, 0);
+
+      //contents of if are only drawn once per gear
+      if (i < 1) {
+        circle(0, 0, 20);
+        noFill();
+        strokeWeight(18);
+        stroke(0,0,0,200)
+        circle(0, 0, 192);
+        strokeWeight(1);
+        text(localNotes, 30,30);
+        
+        
+      }
+
       pop();
 
     }
@@ -165,11 +190,11 @@ function displayQuestion() {
 
   dayNoteField = createInput('')
   dayNoteField.position(width / 2.3, 325);
-  dayNoteField.size(250,50)
+  dayNoteField.size(250, 50)
 
 
   submitButton = createButton('Submit');
-  submitButton.position(width/2.3, 400);
+  submitButton.position(width / 2.3, 400);
   submitButton.mousePressed(submitData);
 
 
@@ -192,7 +217,7 @@ function submitData() {
     'DaySpeed': daySpeedField.value(),
     'DayMood': dayMoodField.value(),
     'DaySig': daySigField.value(),
-    'Note': dayNoteField.value()
+    'DayNote': dayNoteField.value()
   });
 
 
