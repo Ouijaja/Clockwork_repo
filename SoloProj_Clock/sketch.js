@@ -6,7 +6,7 @@ let gearIndex;
 let localRotation = 0;
 let localRate = 1;
 let fps = 60;
-let daySpeedField, dayMoodField, daySigField;
+let daySpeedField, dayMoodField, daySigField, dayNoteField;
 let submitButton;
 let displayButton;
 let showText = 1;
@@ -21,7 +21,7 @@ let clockhand;
 function preload() {
   clockhand = loadImage('/assets/ClockhandV2_small.png');
   userData = loadJSON('userData.json');
- 
+
 }
 
 //**************************************
@@ -30,8 +30,8 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   frameRate(fps);
   gearQuant = (userData.Days.length);
-  
- 
+
+
 
 
   displayQuestion();
@@ -71,6 +71,13 @@ function draw() {
 
     text('How would you rate your mood today from 1 (lowest) to 10 (highest)?', 50, 100);
     text("Today's mood: " + dayMoodField.value(), 50, 125);
+
+    text('How significant do you feel today was in your life,  from 1 (lowest) to 10 (highest)?', 50, 150);
+    text("Today's significance: " + daySigField.value(), 50, 175);
+
+    text('Would you like to include a short note for the day (less than 3 words)?', 50, 300);
+
+
   } else {
 
     localRotation = localRotation + 60 / frameRate(); //increments rotation whilst accounting for lag 
@@ -86,6 +93,10 @@ function draw() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  if(showText == true){
+    removeElements();
+    displayQuestion();
+  }
 }
 
 
@@ -95,15 +106,15 @@ function windowResized() {
 
 function drawHand(handsQuant) {
 
-  
+
   for (g = 0; g < gearQuant; g++) {
 
-  if(g < userData.Days.length){
-    
-    
-  }
+    if (g < userData.Days.length) {
 
-  let rotSpeed = localRotation * localRate;
+
+    }
+
+    let rotSpeed = localRotation * localRate;
 
     for (i = 0; i < handsQuant; i++) {
 
@@ -130,15 +141,24 @@ function drawHand(handsQuant) {
 function displayQuestion() {
 
   daySpeedField = createSlider(1, 10, 5, 1)
-  daySpeedField.position(width / 3, height / 5);
+  daySpeedField.position(width / 2.3, 180);
   daySpeedField.size(250);
 
   dayMoodField = createSlider(1, 10, 5, 1);
-  dayMoodField.position(width / 3, height / 4);
+  dayMoodField.position(width / 2.3, 220);
   dayMoodField.size(250);
 
+  daySigField = createSlider(1, 10, 5, 1);
+  daySigField.position(width / 2.3, 260);
+  daySigField.size(250);
+
+  dayNoteField = createInput('')
+  dayNoteField.position(width / 2.3, 325);
+  dayNoteField.size(250,50)
+
+
   submitButton = createButton('Submit');
-  submitButton.position(100, 200)
+  submitButton.position(width/2.3, 400);
   submitButton.mousePressed(submitData);
 
 
@@ -153,13 +173,17 @@ function submitData() {
   date = date.toDateString().slice(4);
   print('submitted ' + date);
 
-  
-  
+
+
   //userData update
-  userData.Days.push({'DayDate': date,
+  userData.Days.push({
+    'DayDate': date,
     'DaySpeed': daySpeedField.value(),
-    'DayMood': dayMoodField.value()});
-    
+    'DayMood': dayMoodField.value(),
+    'DaySig': daySigField.value(),
+    'Note': noteFieldEntry
+  });
+
 
   saveJSON(userData,
     'userData.json', true);
