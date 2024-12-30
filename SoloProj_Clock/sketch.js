@@ -13,13 +13,14 @@ let displayButton;
 let showText = 1;
 let userData;
 
-
+//TODO:
+//
 
 //**************************** */
 
 function preload() {
   clockhand = loadImage('/assets/ClockhandV2_small.png');
-   userData = loadJSON('userData.json');
+  userData = loadJSON('userData.json');
 }
 
 //**************************************
@@ -27,7 +28,7 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   frameRate(fps);
-  gearQuant = (userData.DayIndex.length);
+  gearQuant = (userData.Days.length);
 
   displayQuestion();
   //daySpeedField.position(width/3,100);
@@ -103,7 +104,7 @@ function drawHand(handsQuant) {
         rotate(rotSpeed + i * 360 / handsQuant);
       }
       else {
-        rotate(1 - (rotSpeed + i * 360 / handsQuant));
+        rotate(0 - (rotSpeed + i * 360 / handsQuant));
 
       }
       image(clockhand, 0, 0);
@@ -129,7 +130,7 @@ function displayQuestion() {
   submitButton.position(100, 200)
   submitButton.mousePressed(submitData);
 
-  
+
 }
 
 //******************** */
@@ -141,19 +142,24 @@ function submitData() {
   date = date.toDateString().slice(4);
   print('submitted ' + date);
 
+  
+  
   //userData
-  /*
-  saveJSON({
-    'DayDate': date, 'DaySpeed': daySpeedField.value(), 'DayMood': dayMoodField.value()
-      })
-*/
+  userData.Days.push({'DayDate': date,
+    'DaySpeed': daySpeedField.value(),
+    'DayMood': dayMoodField.value()});
+    
+
+  saveJSON(userData,
+    'userData.json', true);
+
 
 
   print('manually append the downloaded info to your userData file');
 
   handsQuant = pow(daySpeedField.value(), 2);
 
-  
+
 
   removeElements(submitButton);
 
@@ -161,15 +167,17 @@ function submitData() {
   displayButton.position(100, 200)
   displayButton.mousePressed(displayClock);
 
-  
+
 }
 
-function displayClock(){
+//******************************* */
+
+function displayClock() {
   print('Done!');
   showText = 0;
 
   removeElements(dayMoodField);
   removeElements(daySpeedField);
   removeElements(displayButton);
-  
+
 }

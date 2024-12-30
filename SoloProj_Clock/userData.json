@@ -1,29 +1,13 @@
 {
-    "DayIndex":[
-        
-        
-        {"DayDate": "Dec 28 2024", "DaySpeed": 9, "DayMood": 9},
-        {"DayDate": "Dec 29 2024", "DaySpeed": 10, "DayMood": 5}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-]
-
-
+  "Days":[
+  {
+      "DayDate": "Dec 28 2024",
+      "DaySpeed": 5,
+      "DayMood": 6
+  },
+  {
+      "DayDate": "Dec 29 2024",
+      "DaySpeed": 4,
+      "DayMood": 7
   }
-  
+]}
