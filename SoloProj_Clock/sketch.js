@@ -6,12 +6,12 @@ let gearIndex;
 let localRotation = 0;
 let localRate = 1;
 let fps = 60;
-let daySpeedField;
-let dayMoodField;
+let daySpeedField, dayMoodField, daySigField;
 let submitButton;
 let displayButton;
 let showText = 1;
 let userData;
+let clockhand;
 
 //TODO:
 //
@@ -21,6 +21,7 @@ let userData;
 function preload() {
   clockhand = loadImage('/assets/ClockhandV2_small.png');
   userData = loadJSON('userData.json');
+ 
 }
 
 //**************************************
@@ -29,6 +30,9 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   frameRate(fps);
   gearQuant = (userData.Days.length);
+  
+ 
+
 
   displayQuestion();
   //daySpeedField.position(width/3,100);
@@ -91,9 +95,16 @@ function windowResized() {
 
 function drawHand(handsQuant) {
 
-  //localRate = 
-  let rotSpeed = localRotation * localRate;
+  
   for (g = 0; g < gearQuant; g++) {
+
+  if(g < userData.Days.length){
+    
+    
+  }
+
+  let rotSpeed = localRotation * localRate;
+
     for (i = 0; i < handsQuant; i++) {
 
       push();
@@ -144,7 +155,7 @@ function submitData() {
 
   
   
-  //userData
+  //userData update
   userData.Days.push({'DayDate': date,
     'DaySpeed': daySpeedField.value(),
     'DayMood': dayMoodField.value()});
@@ -154,8 +165,9 @@ function submitData() {
     'userData.json', true);
 
 
+  print('manually replace your userData file with the new one');
 
-  print('manually append the downloaded info to your userData file');
+
 
   handsQuant = pow(daySpeedField.value(), 2);
 

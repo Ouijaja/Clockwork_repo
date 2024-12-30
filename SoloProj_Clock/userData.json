@@ -1,13 +1,14 @@
 {
-  "Days":[
-  {
+  "Days": [
+    {
       "DayDate": "Dec 28 2024",
       "DaySpeed": 5,
       "DayMood": 6
-  },
-  {
+    },
+    {
       "DayDate": "Dec 29 2024",
       "DaySpeed": 4,
       "DayMood": 7
-  }
-]}
+    }
+  ]
+}
