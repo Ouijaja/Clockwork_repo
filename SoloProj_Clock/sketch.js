@@ -13,6 +13,10 @@ let showText = 1;
 let userData;
 let clockhand;
 let motionBlur = 255;
+let borderDistance = 200;
+let gearDistance = 150;
+
+
 //TODO:
 //
 
@@ -48,7 +52,7 @@ function setup() {
 function draw() {
 
   background(220, 220, 220, motionBlur);
-  
+
 
   if (showText == 1) {
     text('How quickly did your day pass, from 1 (lowest) to 10 (highest)?', 50, 50);
@@ -94,9 +98,10 @@ function drawHand() {
 
 
 
+
   for (g = 0; g < gearQuant; g++) {
 
-    
+
     let localHandsCount = userData.Days[g].DaySpeed //sets the number of hands according to the day speed
     let localNotes = userData.Days[g].DayNote //gets the text for notes
     let localScale = pow(userData.Days[g].DaySig, 0.5) / 2 //sets the scale accoring to day significance
@@ -106,26 +111,35 @@ function drawHand() {
 
     if (g == 0) {
       localRate = 1;
-      
+
     } else {
       localRate = userData.Days[g - 1].DaySpeed / localHandsCount //sets gear ratio to neighbour
-      //localScalePrevious = pow(userData.Days[g - 1].DaySig, 0.5) / 2
+      localScalePrevious = pow(userData.Days[g - 1].DaySig, 0.5) / 2
     }
 
 
-    
+    translate(gearDistance * (localScalePrevious+ localScale), 0);
 
-    let rotSpeed = (localRotation * localRate) + 0 - localScale;
-    
-    translate((290*localScale), 0);
+
+
+    let rotSpeed = (localRotation * localRate) / localScale;
+    // push();
+
+
+
 
     for (i = 0; i < localHandsCount; i++) {
-      
+
       push();
 
       translate(0, 250);
 
       angleMode(DEGREES);
+
+      text(gearDistance * (localScalePrevious+ localScale), 0, 150);
+
+
+
       if (g % 2 == 0) {
         rotate(rotSpeed + (i * 360 / localHandsCount));
       }
@@ -134,27 +148,34 @@ function drawHand() {
 
       }
       strokeWeight(1);
-      stroke(0,0,0,255)
-      
+      stroke(0, 0, 0, 255)
+
       scale(localScale);
       image(clockhand, 0, 0);
 
       //contents of if are only drawn once per gear
       if (i < 1) {
+        fill(0, 0, 0, 50);
+        noStroke();
+        circle(0, 0, 350)
+        fill(255);
         circle(0, 0, 20);
         noFill();
         strokeWeight(18);
-        stroke(0,0,0,200)
+        stroke(0, 0, 0, 200)
         circle(0, 0, 192);
         strokeWeight(1);
-        text(localNotes, 30,30);
-        
-        
+        text(localNotes, 30, 30);
+
+
+
       }
 
       pop();
 
+
     }
+    //pop();
   }
 }
 
