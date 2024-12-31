@@ -5,16 +5,22 @@ let slider;
 let gearIndex;
 let localRotation = 0;
 let localRate, localScalePrevious;
-let fps = 60;
+
 let daySpeedField, dayMoodField, daySigField, dayNoteField;
 let submitButton;
 let displayButton;
 let showText = 1;
 let userData;
 let clockhand;
+
+////// Controls
+
+
 let motionBlur = 255;
-let borderDistance = 200;
+//let borderDistance = 200;
 let gearDistance = 150;
+let fps = 60;
+let baseSpeed = 2;
 
 
 //TODO:
@@ -118,11 +124,11 @@ function drawHand() {
     }
 
 
-    translate(gearDistance * (localScalePrevious+ localScale), 0);
+    translate(gearDistance * (localScalePrevious + localScale), 0);
 
 
 
-    let rotSpeed = (localRotation * localRate) / localScale;
+    let rotSpeed = ((localRotation * localRate) / (localScale + localScalePrevious)) * baseSpeed;
     // push();
 
 
@@ -136,7 +142,7 @@ function drawHand() {
 
       angleMode(DEGREES);
 
-      text(gearDistance * (localScalePrevious+ localScale), 0, 150);
+      text(gearDistance * (localScalePrevious + localScale), 0, 150);
 
 
 
@@ -155,9 +161,7 @@ function drawHand() {
 
       //contents of if are only drawn once per gear
       if (i < 1) {
-        fill(0, 0, 0, 50);
-        noStroke();
-        circle(0, 0, 350)
+        
         fill(255);
         circle(0, 0, 20);
         noFill();
