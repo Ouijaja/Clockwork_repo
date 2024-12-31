@@ -5,6 +5,11 @@ let slider;
 let gearIndex;
 let localRotation = 0;
 let localRate, localScalePrevious;
+let chimeQuant;
+let chimeWav;
+let allowChime = true;
+let doneChimesCount = 0;
+let waitTimer;
 
 let daySpeedField, dayMoodField, daySigField, dayNoteField;
 let submitButton;
@@ -31,6 +36,7 @@ let baseSpeed = 2;
 function preload() {
   clockhand = loadImage('/assets/ClockhandV2_small.png');
   userData = loadJSON('userData.json');
+  chimeWav = loadSound('/assets/chime_middleC.wav')
 
 }
 
@@ -77,6 +83,29 @@ function draw() {
 
     localRotation = localRotation + 60 / frameRate(); //increments rotation whilst accounting for lag 
     drawHand();
+    print(second());
+
+    if (second() == 30) {
+      if (allowChime == true) {
+        chimeQuant = 3;
+        allowChime = false;
+        playClockChime();
+        print('clock should chime');
+      }
+
+    }
+
+    if (second() == 0) {
+      allowChime = true;
+      doneChimesCount = 0;
+      print('chime allowed')
+    }
+
+
+
+
+
+
 
 
   }
@@ -129,7 +158,7 @@ function drawHand() {
 
 
     let rotSpeed = ((localRotation * localRate) / (localScale + localScalePrevious)) * baseSpeed;
-    // push();
+
 
 
 
@@ -161,7 +190,7 @@ function drawHand() {
 
       //contents of if are only drawn once per gear
       if (i < 1) {
-        
+
         fill(255);
         circle(0, 0, 20);
         noFill();
@@ -179,7 +208,7 @@ function drawHand() {
 
 
     }
-    //pop();
+
   }
 }
 
@@ -262,4 +291,42 @@ function displayClock() {
   removeElements();
 
 
+}
+
+//********************************** */
+
+function playClockChime() {
+
+  for (doneChimesCount; doneChimesCount < chimeQuant;) {
+
+
+
+
+    chimeWav.play();
+    doneChimesCount++;
+
+    print('Chimed at: ' + chimeQuant + ':00');
+    print(doneChimesCount);
+    print(chimeQuant);
+
+
+  }
+}
+
+
+
+
+//*************************/
+
+
+
+
+
+//sleep function ripped from
+//https://stackoverflow.com/questions/67221313/how-to-wait-in-p5-js
+
+function sleep(millisecondsDuration) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, millisecondsDuration);
+  })
 }
