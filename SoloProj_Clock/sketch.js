@@ -47,7 +47,7 @@ function setup() {
   frameRate(fps);
   gearQuant = (userData.Days.length);
 
-time = millis();
+  time = millis();
 
 
   displayQuestion();
@@ -299,18 +299,37 @@ function playClockChime() {
 
   for (doneChimesCount; doneChimesCount < chimeQuant;) {
 
-    if (millis() - time >= 500) {
+    let persistCount = 0;
+    drawHand();
 
+    if (millis() - time >= 5000 / chimeQuant) {
 
+      if (persistCount < 3) {
+
+        persistCount++
+
+      } else {
+
+        chimeWav.stop();
+        persistCount = 0;
+
+      }
       chimeWav.play();
       doneChimesCount++;
-
       print('Chimed at: ' + chimeQuant + ':00');
-      print(doneChimesCount);
-      print(chimeQuant);
+      print('chimes done: ' + doneChimesCount);
+      print('chime quant: ' + chimeQuant);
+      print('persistCount: ' + persistCount);
 
       time = millis();
+
+
+
     }
+
+
+
+
   }
 }
 
