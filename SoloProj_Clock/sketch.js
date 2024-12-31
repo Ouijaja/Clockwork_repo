@@ -26,10 +26,14 @@ let motionBlur = 255;
 let gearDistance = 150;
 let fps = 60;
 let baseSpeed = 2;
+let concurrentChimes = 3;
 
 
 //TODO:
-//
+
+
+//BUGS:
+//Freezes when chiming
 
 //**************************** */
 
@@ -43,11 +47,12 @@ function preload() {
 //**************************************
 
 function setup() {
+
   createCanvas(windowWidth, windowHeight);
   frameRate(fps);
   gearQuant = (userData.Days.length);
-
   time = millis();
+  
 
 
   displayQuestion();
@@ -81,11 +86,11 @@ function draw() {
 
   } else {
 
-    localRotation = localRotation + 60 / frameRate(); //increments rotation whilst accounting for lag 
+     
     drawHand();
     print(second());
 
-    if (second() == 30) {
+    if (minute() == 0 && second() == 0) {
       if (allowChime == true) {
         chimeQuant = hour();
         allowChime = false;
@@ -95,10 +100,8 @@ function draw() {
 
     }
 
-    if (second() == 0) {
-      allowChime = true;
-      doneChimesCount = 0;
-      print('chime allowed')
+    if (second() == 30) {
+      resetClock();
     }
 
 
@@ -131,8 +134,7 @@ function windowResized() {
 
 function drawHand() {
 
-
-
+  localRotation = localRotation + 60 / frameRate(); //increments rotation whilst accounting for lag
 
   for (g = 0; g < gearQuant; g++) {
 
@@ -142,6 +144,7 @@ function drawHand() {
     let localScale = pow(userData.Days[g].DaySig, 0.5) / 2 //sets the scale accoring to day significance
 
     //sets condiditions for first gear differently to subsequent gears
+    
     //let localOffset = 250 + (350 * g)
 
     if (g == 0) {
@@ -289,6 +292,8 @@ function displayClock() {
   showText = 0;
 
   removeElements();
+  playClockChime();
+  resetClock();
 
 
 }
@@ -297,14 +302,17 @@ function displayClock() {
 
 function playClockChime() {
 
-  for (doneChimesCount; doneChimesCount < chimeQuant;) {
+  for (doneChimesCount; doneChimesCount < 2;) {
 
     let persistCount = 0;
-    drawHand();
+    
+    
 
-    if (millis() - time >= 5000 / chimeQuant) {
+    if (millis() - time >= 5000 / 2) {
 
-      if (persistCount < 3) {
+      
+
+      if (persistCount < concurrentChimes) {
 
         persistCount++
 
@@ -323,6 +331,8 @@ function playClockChime() {
 
       time = millis();
 
+      
+
 
 
     }
@@ -331,5 +341,16 @@ function playClockChime() {
 
 
   }
+
+  
 }
 
+////******************* */#
+
+function resetClock(){
+
+  allowChime = true;
+  doneChimesCount = 0;
+  print('chime reset')
+
+}
