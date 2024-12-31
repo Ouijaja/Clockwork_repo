@@ -9,7 +9,7 @@ let chimeQuant;
 let chimeWav;
 let allowChime = true;
 let doneChimesCount = 0;
-let waitTimer;
+let time;
 
 let daySpeedField, dayMoodField, daySigField, dayNoteField;
 let submitButton;
@@ -47,7 +47,7 @@ function setup() {
   frameRate(fps);
   gearQuant = (userData.Days.length);
 
-
+time = millis();
 
 
   displayQuestion();
@@ -87,7 +87,7 @@ function draw() {
 
     if (second() == 30) {
       if (allowChime == true) {
-        chimeQuant = 3;
+        chimeQuant = hour();
         allowChime = false;
         playClockChime();
         print('clock should chime');
@@ -299,34 +299,18 @@ function playClockChime() {
 
   for (doneChimesCount; doneChimesCount < chimeQuant;) {
 
+    if (millis() - time >= 500) {
 
 
+      chimeWav.play();
+      doneChimesCount++;
 
-    chimeWav.play();
-    doneChimesCount++;
+      print('Chimed at: ' + chimeQuant + ':00');
+      print(doneChimesCount);
+      print(chimeQuant);
 
-    print('Chimed at: ' + chimeQuant + ':00');
-    print(doneChimesCount);
-    print(chimeQuant);
-
-
+      time = millis();
+    }
   }
 }
 
-
-
-
-//*************************/
-
-
-
-
-
-//sleep function ripped from
-//https://stackoverflow.com/questions/67221313/how-to-wait-in-p5-js
-
-function sleep(millisecondsDuration) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, millisecondsDuration);
-  })
-}
