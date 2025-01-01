@@ -10,13 +10,14 @@ let chimeWav;
 let allowChime = true;
 let doneChimesCount = 0;
 let time;
-
+let dissonance;
 let daySpeedField, dayMoodField, daySigField, dayNoteField;
 let submitButton;
 let displayButton;
 let showText = 1;
 let userData;
 let clockhand;
+let pitchShifter;
 
 ////// Controls
 
@@ -50,9 +51,12 @@ function setup() {
 
   createCanvas(windowWidth, windowHeight);
   frameRate(fps);
-  gearQuant = (userData.Days.length);
+  //gearQuant = (userData.Days.length);
+  gearQuant= 5;
   time = millis();
-  
+  //pitchShifter = new p5.PitchShifter();
+  //chimeWav.disconnect();
+  //chimeWav.connect(pitchShifter);
 
 
   displayQuestion();
@@ -86,7 +90,7 @@ function draw() {
 
   } else {
 
-     
+
     drawHand();
     print(second());
 
@@ -144,7 +148,7 @@ function drawHand() {
     let localScale = pow(userData.Days[g].DaySig, 0.5) / 2 //sets the scale accoring to day significance
 
     //sets condiditions for first gear differently to subsequent gears
-    
+
     //let localOffset = 250 + (350 * g)
 
     if (g == 0) {
@@ -273,6 +277,7 @@ function submitData() {
 
 
   handsQuant = pow(daySpeedField.value(), 2);
+  gearQuant = (userData.Days.length);
 
 
 
@@ -281,6 +286,11 @@ function submitData() {
   displayButton = createButton('DONE');
   displayButton.position(100, 200)
   displayButton.mousePressed(displayClock);
+
+  for (g = 0; g < gearQuant;g++) {
+    dissonance = dissonance + (10 - userData.Days[g].DayMood);
+
+  }
 
 
 }
@@ -292,7 +302,7 @@ function displayClock() {
   showText = 0;
 
   removeElements();
-  playClockChime();
+  //playClockChime();
   resetClock();
 
 
@@ -305,12 +315,13 @@ function playClockChime() {
   for (doneChimesCount; doneChimesCount < 2;) {
 
     let persistCount = 0;
-    
-    
+    let randSign = random(0, 1);
+    let shiftVal = 0;
+
 
     if (millis() - time >= 5000 / 2) {
 
-      
+
 
       if (persistCount < concurrentChimes) {
 
@@ -322,16 +333,57 @@ function playClockChime() {
         persistCount = 0;
 
       }
+
+      // Dissonance setting
+
+
+      if (dissonance == 0) {
+
+        if (doneChimesCount % 10 == 0) {
+          shiftVal = 12;
+        } else {
+          shiftVal = 5 * doneChimesCount;
+
+        }
+
+      } else if (dissonance < 5) {
+
+        shiftVal = 5 * doneChimesCount;
+
+      } else if (dissonance < 8) {
+
+        shiftVal = random(5,12);
+
+      } else {
+        shiftVal = random(0,12)* (random(1,10)/10);
+      }
+
+
+
+
+
+      // randomises pitch shift up or down
+      if (randSign == 0) {
+        shiftVal = shiftVal;
+      } else {
+        shiftVal = 0 - shiftVal;
+      }
+
+
+
+
+      //pitchShifter.shift(shiftVal);
       chimeWav.play();
       doneChimesCount++;
       print('Chimed at: ' + chimeQuant + ':00');
       print('chimes done: ' + doneChimesCount);
       print('chime quant: ' + chimeQuant);
       print('persistCount: ' + persistCount);
+      print ('Dissonance: ' + dissonance);
 
       time = millis();
 
-      
+
 
 
 
@@ -342,12 +394,12 @@ function playClockChime() {
 
   }
 
-  
+
 }
 
 ////******************* */#
 
-function resetClock(){
+function resetClock() {
 
   allowChime = true;
   doneChimesCount = 0;

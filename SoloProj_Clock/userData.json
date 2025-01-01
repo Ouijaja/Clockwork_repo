@@ -1,10 +1,165 @@
 {
   "Days": [
     {
-      "DayDate": "Dec 28 2024",
+      "DayDate": "Nov 29 2024",
+      "DaySpeed": 3,
+      "DayMood": 3,
+      "DaySig": 1,
+      "DayNote": ""
+    }
+    ,
+    {
+      "DayDate": "Nov 30 2024",
+      "DaySpeed": 3,
+      "DayMood": 3,
+      "DaySig": 1,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Dec 01 2024",
+      "DaySpeed": 3,
+      "DayMood": 3,
+      "DaySig": 1,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Dec 02 2024",
+      "DaySpeed": 5,
+      "DayMood": 4,
+      "DaySig": 2,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Dec 03 2024",
+      "DaySpeed": 2,
+      "DayMood": 2,
+      "DaySig": 4,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Dec 04 2024",
+      "DaySpeed": 7,
+      "DayMood": 6,
+      "DaySig": 4,
+      "DayNote": "Natural History Museum w/ Lilly & Amaya"
+    },
+    {
+      "DayDate": "Dec 05 2024",
+      "DaySpeed": 1,
+      "DayMood": 1,
+      "DaySig": 5,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Dec 06 2024",
+      "DaySpeed": 4,
+      "DayMood": 5,
+      "DaySig": 3,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Dec 07 2024",
       "DaySpeed": 5,
       "DayMood": 6,
-      "DaySig": 1,
+      "DaySig": 4,
+      "DayNote": "Dinner at Jamie's"
+    },
+    {
+      "DayDate": "Dec 08 2024",
+      "DaySpeed": 5,
+      "DayMood": 5,
+      "DaySig": 2,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Dec 09 2024",
+      "DaySpeed": 5,
+      "DayMood": 6,
+      "DaySig": 2,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Dec 10 2024",
+      "DaySpeed": 4,
+      "DayMood": 6,
+      "DaySig": 2,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Dec 11 2024",
+      "DaySpeed": 5,
+      "DayMood": 7,
+      "DaySig": 2,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Dec 12 2024",
+      "DaySpeed": 5,
+      "DayMood": 7,
+      "DaySig": 3,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Dec 13 2024",
+      "DaySpeed": 5,
+      "DayMood": 7,
+      "DaySig": 2,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Dec 14 2024",
+      "DaySpeed": 5,
+      "DayMood": 6,
+      "DaySig": 2,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Dec 15 2024",
+      "DaySpeed": 5,
+      "DayMood": 6,
+      "DaySig": 2,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Dec 20 2024",
+      "DaySpeed": 3,
+      "DayMood": 4,
+      "DaySig": 2,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Dec 21 2024",
+      "DaySpeed": 3,
+      "DayMood": 4,
+      "DaySig": 2,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Dec 22 2024",
+      "DaySpeed": 3,
+      "DayMood": 4,
+      "DaySig": 2,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Dec 23 2024",
+      "DaySpeed": 4,
+      "DayMood": 6,
+      "DaySig": 4,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Dec 24 2024",
+      "DaySpeed": 5,
+      "DayMood": 6,
+      "DaySig": 2,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Dec 25 2024",
+      "DaySpeed": 6,
+      "DayMood": 6,
+      "DaySig": 3,
       "DayNote": ""
     },
     {
@@ -22,26 +177,11 @@
       "DayNote": ""
     },
     {
-      "DayDate": "Dec 30 2024",
-      "DaySpeed": 4,
+      "DayDate": "Dec 31 2024",
+      "DaySpeed": 6,
       "DayMood": 7,
-      "DaySig": 3,
-      "DayNote": ""
-    },
-    {
-      "DayDate": "Dec 30 2024",
-      "DaySpeed": 3,
-      "DayMood": 6,
-      "DaySig": 5,
-      "DayNote": ""
-    },
-    {
-      "DayDate": "Dec 30 2024",
-      "DaySpeed": 9,
-      "DayMood": 5,
-      "DaySig": 4,
-      "DayNote": ""
+      "DaySig": 2,
+      "DayNote": "NYE at Sam's"
     }
-    
   ]
 }
