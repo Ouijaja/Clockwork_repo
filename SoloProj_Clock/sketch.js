@@ -28,6 +28,7 @@ let gearDistance = 150;
 let fps = 60;
 let baseSpeed = 2;
 let concurrentChimes = 3;
+let handDensity = 1.2; //exponential
 
 
 //TODO:
@@ -143,7 +144,7 @@ function drawHand() {
   for (g = 0; g < gearQuant; g++) {
 
 
-    let localHandsCount = userData.Days[g].DaySpeed //sets the number of hands according to the day speed
+    let localHandsCount = round(pow(10- userData.Days[g].DaySpeed,handDensity)) //sets the number of hands according to the day speed
     let localNotes = userData.Days[g].DayNote //gets the text for notes
     let localScale = pow(userData.Days[g].DaySig, 0.5) / 2 //sets the scale accoring to day significance
 
@@ -178,7 +179,7 @@ function drawHand() {
 
       angleMode(DEGREES);
 
-      text(gearDistance * (localScalePrevious + localScale), 0, 150);
+      text(localNotes, 0, 150);
 
 
 
@@ -205,7 +206,7 @@ function drawHand() {
         stroke(0, 0, 0, 200)
         circle(0, 0, 192);
         strokeWeight(1);
-        text(localNotes, 30, 30);
+        
 
 
 

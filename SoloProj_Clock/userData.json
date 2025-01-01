@@ -1,6 +1,14 @@
 {
   "Days": [
     {
+      "DayDate": "Nov 28 2024",
+      "DaySpeed": 5,
+      "DayMood": 5,
+      "DaySig": 5,
+      "DayNote": ""
+    }
+    ,
+    {
       "DayDate": "Nov 29 2024",
       "DaySpeed": 3,
       "DayMood": 3,
@@ -40,14 +48,14 @@
       "DayDate": "Dec 04 2024",
       "DaySpeed": 7,
       "DayMood": 6,
-      "DaySig": 4,
+      "DaySig": 5,
       "DayNote": "Natural History Museum w/ Lilly & Amaya"
     },
     {
       "DayDate": "Dec 05 2024",
       "DaySpeed": 1,
       "DayMood": 1,
-      "DaySig": 5,
+      "DaySig": 6,
       "DayNote": ""
     },
     {
