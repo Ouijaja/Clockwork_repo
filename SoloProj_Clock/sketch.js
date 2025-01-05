@@ -16,7 +16,11 @@ let showText = 1;
 let userData;
 let clockhand;
 let pitchShifter;
-let gearDistanceTranslation;
+let gearDistanceTranslation = 0;
+let totalMood = 0;
+let avgMood = 0;
+let colour = 0
+let gearPosTotal = 0;
 
 ////// Controls
 
@@ -35,11 +39,13 @@ let handDensity = 1; //exponential
 
 //BUGS:
 //Freezes when chiming
+//How to get on new line? Total translation doesn't add per gear, but per frame
+//How to step through?
 
 //**************************** */
 
 function preload() {
-  clockhand = loadImage('/assets/ClockhandV2_small.png');
+  clockhand = loadImage('/assets/ClockhandV2White_small.png');
   userData = loadJSON('userData.json');
   chimeWav = loadSound('/assets/chime_middleC.wav')
 
@@ -90,9 +96,9 @@ function draw() {
 
   } else {
 
-    translate(- 1000 * gearHorizScale.value(), 0);
+    translate(- 1000 * gearHorizScale.value(), 0); // allows slider to scroll gears
     drawHand();
-    print(second());
+    //print(second());
 
     if (/*minute() == 0 &&*/ second() == 55) {
       if (allowChime == true) {
@@ -161,13 +167,17 @@ function drawHand() {
 
 
     gearDistanceTranslation = (gearDistance * (localScalePrevious + localScale)); // set the distance between gears
-    translate(gearDistanceTranslation, 0); 
+    
+  
+
+    translate(gearDistanceTranslation, 0);
 
     // set rotation speed
     //let rotSpeed = ((localRotation * localRate) / (localScale + localScalePrevious)) * baseSpeed;
 
-    let rotSpeed = (localRotation* pow(localRate,2)) /* localScale)*/ * baseSpeed;
-
+    let rotSpeed = ((localRotation * (userData.Days[g].DaySpeed)) / 10) / (localScale + localScalePrevious) * baseSpeed;
+    let localMood = map(userData.Days[g].DayMood, 1, 10, 0, 255);
+    let localColour = abs((sin(frameCount / (pow(11 - userData.Days[g].DaySpeed, 3)) * 10 + 1) * localMood));
 
 
     for (i = 0; i < localHandsCount; i++) {
@@ -178,7 +188,11 @@ function drawHand() {
 
       angleMode(DEGREES);
 
-      text(localNotes, 0, 150);
+
+      textAlign(CENTER);
+      text(gearPosTotal, 0, 150);
+
+
 
 
 
@@ -193,16 +207,17 @@ function drawHand() {
       stroke(0, 0, 0, 255)
 
       scale(localScale);
+      tint(localColour);
       image(clockhand, 0, 0);
 
       //contents of if are only drawn once per gear
-      if (i < 1) {
+      if (i + 1 == localHandsCount) {
 
         fill(255);
         circle(0, 0, 20);
         noFill();
         strokeWeight(18);
-        stroke(0, 0, 0, 200)
+        stroke(localColour, 200);
         circle(0, 0, 192);
         strokeWeight(1);
 
@@ -279,6 +294,13 @@ function submitData() {
   handsQuant = pow(daySpeedField.value(), 2);
   gearQuant = (userData.Days.length);
 
+  for (g = 0; g < gearQuant; g++) {
+
+    totalMood = totalMood + userData.Days[g].DayMood;
+  }
+
+  avgMood = totalMood / gearQuant;
+  colour = map(avgMood, 1, 10, 0, 255);
 
 
   removeElements(submitButton);
@@ -292,7 +314,7 @@ function submitData() {
 
   }
 
-  
+
 
 
 }
@@ -307,9 +329,9 @@ function displayClock() {
   //playClockChime();
   resetClock();
 
-  gearHorizScale = createSlider(0,10,0,0);
-  gearHorizScale.position(50,50);
-  gearHorizScale.size(windowWidth-100,30);
+  gearHorizScale = createSlider(0, 10, 0, 0);
+  gearHorizScale.position(50, 50);
+  gearHorizScale.size(windowWidth - 100, 30);
 
 }
 
