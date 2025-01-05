@@ -1,0 +1,22 @@
+{
+  "Days": [
+    {
+      "DayDate": "Jan 03 2025",
+      "DaySpeed": 8,
+      "DayMood": 7,
+      "DaySig": 6,
+      "DayNote": "Finished an assignment "
+    },
+    {
+      "Days": [
+        {
+          "DayDate": "Jan 04 2025",
+          "DaySpeed": 10,
+          "DayMood": 9,
+          "DaySig": 7,
+          "DayNote": "Celebration and frustration"
+        }
+      ]
+    }
+  ]
+}

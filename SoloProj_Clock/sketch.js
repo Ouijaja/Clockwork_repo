@@ -1,7 +1,6 @@
 
 let handsQuant = 15;
 let gearQuant = 2;
-let slider;
 let gearIndex;
 let localRotation = 0;
 let localRate, localScalePrevious;
@@ -11,13 +10,13 @@ let allowChime = true;
 let doneChimesCount = 0;
 let time;
 let dissonance;
-let daySpeedField, dayMoodField, daySigField, dayNoteField;
-let submitButton;
-let displayButton;
+let daySpeedField, dayMoodField, daySigField, dayNoteField, gearHorizScale;
+let submitButton, displayButton;
 let showText = 1;
 let userData;
 let clockhand;
 let pitchShifter;
+let gearDistanceTranslation;
 
 ////// Controls
 
@@ -28,7 +27,7 @@ let gearDistance = 150;
 let fps = 60;
 let baseSpeed = 2;
 let concurrentChimes = 3;
-let handDensity = 1.2; //exponential
+let handDensity = 1; //exponential
 
 
 //TODO:
@@ -91,7 +90,7 @@ function draw() {
 
   } else {
 
-
+    translate(- 1000 * gearHorizScale.value(), 0);
     drawHand();
     print(second());
 
@@ -139,7 +138,7 @@ function windowResized() {
 
 function drawHand() {
 
-  localRotation = localRotation + 60 / frameRate(); //increments rotation whilst accounting for lag
+  localRotation = localRotation + (60 / frameRate()); //increments rotation whilst accounting for lag
 
   for (g = 0; g < gearQuant; g++) {
 
@@ -161,13 +160,13 @@ function drawHand() {
     }
 
 
-    translate(gearDistance * (localScalePrevious + localScale), 0);
+    gearDistanceTranslation = (gearDistance * (localScalePrevious + localScale)); // set the distance between gears
+    translate(gearDistanceTranslation, 0); 
 
+    // set rotation speed
+    //let rotSpeed = ((localRotation * localRate) / (localScale + localScalePrevious)) * baseSpeed;
 
-
-    let rotSpeed = ((localRotation * localRate) / (localScale + localScalePrevious)) * baseSpeed;
-
-
+    let rotSpeed = (localRotation* pow(localRate,2)) /* localScale)*/ * baseSpeed;
 
 
 
@@ -293,6 +292,8 @@ function submitData() {
 
   }
 
+  
+
 
 }
 
@@ -306,6 +307,9 @@ function displayClock() {
   //playClockChime();
   resetClock();
 
+  gearHorizScale = createSlider(0,10,0,0);
+  gearHorizScale.position(50,50);
+  gearHorizScale.size(windowWidth-100,30);
 
 }
 

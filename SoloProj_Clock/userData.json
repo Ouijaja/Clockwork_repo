@@ -186,10 +186,39 @@
     },
     {
       "DayDate": "Dec 31 2024",
-      "DaySpeed": 6,
+      "DaySpeed": 5,
       "DayMood": 7,
       "DaySig": 2,
       "DayNote": "NYE at Sam's"
+    },
+    {
+      "DayDate": "Jan 01 2024",
+      "DaySpeed": 3,
+      "DayMood": 7,
+      "DaySig": 3,
+      "DayNote": "Nosferatu"
+    },
+    {
+      "DayDate": "Jan 02 2024",
+      "DaySpeed": 5,
+      "DayMood": 5,
+      "DaySig": 2,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Jan 03 2024",
+      "DaySpeed": 5,
+      "DayMood": 7,
+      "DaySig": 2,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Jan 04 2024",
+      "DaySpeed": 5,
+      "DayMood": 6,
+      "DaySig": 2,
+      "DayNote": ""
     }
+   
   ]
 }
