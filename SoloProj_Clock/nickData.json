@@ -6,6 +6,27 @@
       "DayMood": 7,
       "DaySig": 4,
       "DayNote": ""
+    },
+    {
+      "DayDate": "Jan 05 2025",
+      "DaySpeed": 3,
+      "DayMood": 5,
+      "DaySig": 3,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Jan 07 2025",
+      "DaySpeed": 4,
+      "DayMood": 4,
+      "DaySig": 4,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Jan 09 2025",
+      "DaySpeed": 6,
+      "DayMood": 7,
+      "DaySig": 6,
+      "DayNote": ""
     }
   ]
 }

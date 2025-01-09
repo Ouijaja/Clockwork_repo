@@ -6,6 +6,20 @@
       "DayMood": 4,
       "DaySig": 3,
       "DayNote": "out of milk"
+    },
+    {
+      "DayDate": "Jan 07 2025",
+      "DaySpeed": 7,
+      "DayMood": 8,
+      "DaySig": 3,
+      "DayNote": "good work; late night"
+    },
+    {
+      "DayDate": "Jan 08 2025",
+      "DaySpeed": 9,
+      "DayMood": 6,
+      "DaySig": 3,
+      "DayNote": "hard work, nice weather"
     }
   ]
 }

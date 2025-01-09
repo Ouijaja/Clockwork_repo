@@ -218,6 +218,27 @@
       "DayMood": 6,
       "DaySig": 2,
       "DayNote": ""
+    },
+    {
+      "DayDate": "Jan 06 2024",
+      "DaySpeed": 6,
+      "DayMood": 8,
+      "DaySig": 3,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Jan 07 2025",
+      "DaySpeed": 6,
+      "DayMood": 7,
+      "DaySig": 2,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Jan 09 2025",
+      "DaySpeed": 8,
+      "DayMood": 7,
+      "DaySig": 3,
+      "DayNote": "Dave's Funeral"
     }
    
   ]

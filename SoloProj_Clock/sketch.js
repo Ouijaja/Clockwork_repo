@@ -190,7 +190,7 @@ function drawHand() {
 
 
       textAlign(CENTER);
-      text(gearPosTotal, 0, 150);
+      text(localNotes, 0, 150);
 
 
 
