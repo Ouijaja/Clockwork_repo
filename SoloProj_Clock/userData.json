@@ -239,6 +239,20 @@
       "DayMood": 7,
       "DaySig": 3,
       "DayNote": "Dave's Funeral"
+    } ,
+    {
+      "DayDate": "Jan 10 2025",
+      "DaySpeed": 7,
+      "DayMood": 8,
+      "DaySig": 3,
+      "DayNote": "Moved back for uni"
+    },
+    {
+      "DayDate": "Jan 011 2025",
+      "DaySpeed": 7,
+      "DayMood": 8,
+      "DaySig": 3,
+      "DayNote": "Moved back for uni"
     }
    
   ]
