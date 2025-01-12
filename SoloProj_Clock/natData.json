@@ -34,6 +34,13 @@
       "DayMood": 8,
       "DaySig": 6,
       "DayNote": "fought Merlin, won poker"
+    },
+    {
+      "DayDate": "Jan 11 2025",
+      "DaySpeed": 6,
+      "DayMood": 7,
+      "DaySig": 4,
+      "DayNote": "day out, some gaming"
     }
   ]
 }

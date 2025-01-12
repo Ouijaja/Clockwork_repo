@@ -248,11 +248,18 @@
       "DayNote": "Moved back for uni"
     },
     {
-      "DayDate": "Jan 011 2025",
+      "DayDate": "Jan 11 2025",
       "DaySpeed": 7,
       "DayMood": 8,
-      "DaySig": 3,
-      "DayNote": "Moved back for uni"
+      "DaySig": 2,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Jan 12 2025",
+      "DaySpeed": 7,
+      "DayMood": 7,
+      "DaySig": 2,
+      "DayNote": ""
     }
    
   ]
