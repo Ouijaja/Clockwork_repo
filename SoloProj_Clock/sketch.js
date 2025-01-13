@@ -47,7 +47,6 @@ let handDensity = 1; //exponential
 function preload() {
   clockhand = loadImage('/assets/ClockhandV2White_small.png');
   userData = loadJSON('userData.json');
-  chimeWav = loadSound('/assets/chime_middleC.wav')
 
 }
 
@@ -59,10 +58,12 @@ function setup() {
   frameRate(fps);
   //gearQuant = (userData.Days.length);
   gearQuant = 5;
+  chimeQuant = hour()
   time = millis();
   //pitchShifter = new p5.PitchShifter();
   //chimeWav.disconnect();
   //chimeWav.connect(pitchShifter);
+
 
 
   displayQuestion();
@@ -99,23 +100,23 @@ function draw() {
     translate(- 1000 * gearHorizScale.value(), 0); // allows slider to scroll gears
     drawHand();
     //print(second());
-
-    if (/*minute() == 0 &&*/ second() == 55) {
-      if (allowChime == true) {
-        chimeQuant = hour();
-        allowChime = false;
-        playClockChime();
-        print('clock should chime');
-      }
-
-    }
-
-    if (second() == 30) {
-      resetClock();
-    }
-
-
-
+    /*
+        if (minute() == 0 && second() == 55) {
+          if (allowChime == true) {
+            chimeQuant = hour();
+            allowChime = false;
+            playClockChime();
+            print('clock should chime');
+          }
+    
+        }
+    
+        if (second() == 30) {
+          resetClock();
+        }
+    
+    
+    */
 
 
 
@@ -167,8 +168,8 @@ function drawHand() {
 
 
     gearDistanceTranslation = (gearDistance * (localScalePrevious + localScale)); // set the distance between gears
-    
-  
+
+
 
     translate(gearDistanceTranslation, 0);
 
@@ -191,9 +192,6 @@ function drawHand() {
 
       textAlign(CENTER);
       text(localNotes, 0, 150);
-
-
-
 
 
       if (g % 2 == 0) {
@@ -273,7 +271,7 @@ function submitData() {
 
 
 
-  //userData update
+  //userData update////////////////////////////////////////////////////////
   userData.Days.push({
     'DayDate': date,
     'DaySpeed': daySpeedField.value(),
@@ -314,7 +312,7 @@ function submitData() {
 
   }
 
-
+  Tone.start();
 
 
 }
@@ -326,7 +324,9 @@ function displayClock() {
   showText = 0;
 
   removeElements();
-  //playClockChime();
+
+  resetClock();
+  playClockChime();
   resetClock();
 
   gearHorizScale = createSlider(0, 10, 0, 0);
@@ -339,64 +339,83 @@ function displayClock() {
 
 function playClockChime() {
 
-  for (doneChimesCount; doneChimesCount < chimeQuant;) {
 
-    let persistCount = 0;
+  for (doneChimesCount = 0; doneChimesCount < 5;) {
 
-    let shiftVal = 0;
+    if (millis() - time >= 1000) {
 
+      let shiftVal = doneChimesCount;
+      playSound(shiftVal);
 
-    if (millis() - time >= 5000 / chimeQuant) {
-
-
-
-      if (persistCount < concurrentChimes) {
-
-        persistCount++
-
-      } else {
-
-        chimeWav.stop();
-        persistCount = 0;
-
-      }
-
-
-      setDissonance(shiftVal);
-
-
-      //pitchShifter.shift(shiftVal);
-
-      chimeWav.play();
-      doneChimesCount++;
-
-      //Plays another chime overlapping the first
-      if (chimeQuant > 12 && chimeQuant - doneChimesCount >= 2) {
-
-        chimeWav.play();
-        doneChimesCount++;
-      }
-
-
-      print('Chimed at: ' + chimeQuant + ':00');
-      print('chimes done: ' + doneChimesCount);
-      print('chime quant: ' + chimeQuant);
-      print('persistCount: ' + persistCount);
-      print('Dissonance: ' + dissonance);
-
+      print('debugChime ' + (doneChimesCount + 1) + ' of ' + chimeQuant);
       time = millis();
-
-
-
-
-
+      doneChimesCount++
     }
-
-
   }
-
-
 }
+/*
+for (doneChimesCount; doneChimesCount < chimeQuant;) {
+ 
+  let persistCount = 0;
+ 
+  let shiftVal = -5;
+  let PitchShifter = new Tone.PitchShift(shiftVal).toDestination();
+  let player1 = new Tone.Player('/assets/chime_middleC.wav').connect(PitchShifter);
+  
+  //let player2 = new Tone.Player('/assets/chime_middleC.wav').connect(PitchShifter);
+ 
+  if (millis() - time >= 5000 / chimeQuant) {
+ 
+ 
+      if (persistCount < concurrentChimes) {
+ 
+      persistCount++
+ 
+    } else {
+ 
+      //player1.autostart = false;
+     // player2.autostart = false;
+      persistCount = 0;
+ 
+    }
+ 
+ 
+    //setDissonance(shiftVal);
+ 
+ 
+    
+ 
+    player1.autostart = true;
+    doneChimesCount++;
+ 
+    //Plays another chime overlapping the first
+    if (chimeQuant > 12 && chimeQuant - doneChimesCount >= 2) {
+ 
+      //player2.autostart = true;
+      doneChimesCount++;
+    }
+ 
+ 
+    print('Chimed at: ' + chimeQuant + ':00');
+    print('chimes done: ' + doneChimesCount);
+    print('chime quant: ' + chimeQuant);
+    print('persistCount: ' + persistCount);
+    print('Dissonance: ' + dissonance);
+ 
+    time = millis();
+ 
+ 
+ 
+ 
+ 
+  }
+ 
+ 
+}
+ 
+ 
+}
+*/
 
 ////******************* */
 
@@ -411,7 +430,7 @@ function resetClock() {
 //******************** */
 
 function setDissonance(shiftVal) {
-
+  print(shiftVal);
   let randSign = random(0, 1);
 
   if (dissonance == 0) {
@@ -441,4 +460,16 @@ function setDissonance(shiftVal) {
   } else {
     shiftVal = 0 - shiftVal;
   }
+}
+
+//////////////////////////////////////
+
+function playSound(shiftVal) {
+
+  let PitchShifter = new Tone.PitchShift(shiftVal).toDestination();
+  let player = new Tone.Player('/assets/chime_middleC.wav').connect(PitchShifter);
+
+  
+  player.autostart = true;
+
 }
