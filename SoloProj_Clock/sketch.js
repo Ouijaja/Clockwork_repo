@@ -35,9 +35,10 @@ let handDensity = 1; //exponential
 
 
 //TODO:
+//!USER DATA SAVE DISABLED FOR DEBUG!
 
-
-//BUGS:
+//QUESTIONS:
+//Sound play is queued then played at once, rather than played individually.
 //Freezes when chiming
 //How to get on new line? Total translation doesn't add per gear, but per frame
 //How to step through?
@@ -281,9 +282,11 @@ function submitData() {
   });
 
 
-  saveJSON(userData,
-    'userData.json', true);
-
+  //USER DATA SAVE DISABLED FOR DEBUG
+  /*
+    saveJSON(userData,
+      'userData.json', true);
+  */
 
   print('manually replace your userData file with the new one');
 
@@ -469,7 +472,7 @@ function playSound(shiftVal) {
   let PitchShifter = new Tone.PitchShift(shiftVal).toDestination();
   let player = new Tone.Player('/assets/chime_middleC.wav').connect(PitchShifter);
 
-  
+
   player.autostart = true;
 
 }
