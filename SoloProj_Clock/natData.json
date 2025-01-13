@@ -41,6 +41,13 @@
       "DayMood": 7,
       "DaySig": 4,
       "DayNote": "day out, some gaming"
+    },
+    {
+      "DayDate": "Jan 12 2025",
+      "DaySpeed": 6,
+      "DayMood": 6,
+      "DaySig": 4,
+      "DayNote": "Played Geb, wrote stuff."
     }
   ]
 }
