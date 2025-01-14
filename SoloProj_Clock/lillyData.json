@@ -34,6 +34,20 @@
       "DayMood": 5,
       "DaySig": 3,
       "DayNote": "ooh i have a desk"
-    }
+    },
+    {
+      "DayDate": "Jan 12 2025",
+      "DaySpeed": 5,
+      "DayMood": 5,
+      "DaySig": 2,
+      "DayNote": "the solids are in me"
+    },
+    {
+      "DayDate": "Jan 13 2025",
+      "DaySpeed": 5,
+      "DayMood": 6,
+      "DaySig": 6,
+      "DayNote": "bruh writing is hard"
+    }  
   ]
 }

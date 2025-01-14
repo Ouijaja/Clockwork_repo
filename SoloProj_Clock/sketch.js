@@ -258,6 +258,10 @@ function displayQuestion() {
   submitButton.position(width / 2.3, 400);
   submitButton.mousePressed(submitData);
 
+    let chimeButton = createButton('TEST CHIME');
+    chimeButton.position(width / 8, 400);
+    chimeButton.mousePressed(playClockChime);
+    chimeButton.size(300,30);
 
 }
 
@@ -350,7 +354,7 @@ function playClockChime() {
       let shiftVal = doneChimesCount;
       playSound(shiftVal);
 
-      print('debugChime ' + (doneChimesCount + 1) + ' of ' + chimeQuant);
+      print('debugChime ' + (doneChimesCount + 1) + ' of ' + 5);
       time = millis();
       doneChimesCount++
     }
