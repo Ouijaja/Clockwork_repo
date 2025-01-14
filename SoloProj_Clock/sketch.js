@@ -10,7 +10,7 @@ let allowChime = true;
 let doneChimesCount = 0;
 let time;
 let dissonance = 0;
-let daySpeedField, dayMoodField, daySigField, dayNoteField, gearHorizScale;
+let daySpeedField, dayMoodField, daySigField, dayNoteField, gearVerScale;
 let submitButton, displayButton;
 let showText = 1;
 let userData;
@@ -28,24 +28,24 @@ let totalSpeed = 0;
 ////// Controls
 
 
-let motionBlur = 255;
-//let borderDistance = 200;
+let motionBlur = 255; // 255 least, 0 most
+let borderDistance = 200;
 let gearDistance = 150;
 let fps = 60;
-let baseSpeed = 2;
+let baseSpeed = 0.5;
 let concurrentChimes = 6;
 let handDensity = 1; //exponential
+//let dissonanceWeighting = 1.5; //exponent for weighting dissonance
+
 
 
 //TODO:
 //!USER DATA SAVE DISABLED FOR DEBUG!
 
 //QUESTIONS:
-//Sound play is queued then played at once, rather than played individually.
-//Freezes when chiming
-//How to get on new line? Total translation doesn't add per gear, but per frame
+
 //How to step through?
-//innerWidth
+
 
 //**************************** */
 
@@ -102,26 +102,25 @@ function draw() {
 
   } else {
 
-    translate(- 1000 * gearHorizScale.value(), 0); // allows slider to scroll gears
+    translate(0, -1000 * gearVerScale.value()); // allows slider to scroll gears
     drawHand();
-    //print(second());
-    /*
-        if (minute() == 0 && second() == 55) {
-          if (allowChime == true) {
-            chimeQuant = hour();
-            allowChime = false;
-            playClockChime();
-            print('clock should chime');
-          }
-    
-        }
-    
-        if (second() == 30) {
-          resetClock();
-        }
-    
-    
-    */
+
+    if (minute() == 0 && second() == 0) {
+      if (allowChime == true) {
+        chimeQuant = hour();
+        allowChime = false;
+        playClockChime();
+        print('clock should chime');
+      }
+
+    }
+
+    if (minute() == 2 && second() == 0) {
+      resetClock();
+    }
+
+
+
 
 
 
@@ -184,14 +183,14 @@ function drawHand() {
     posStore = posStore + gearDistanceTranslation;
     if (posStore >= innerWidth) {
       posStore = posStore - (innerWidth / 50);
-      translate(-posStore, 500);
-      posStore = 0;
+      translate(-posStore + borderDistance, 500);
+      posStore = gearDistanceTranslation;
     }
 
     // set rotation speed
     //let rotSpeed = ((localRotation * localRate) / (localScale + localScalePrevious)) * baseSpeed;
 
-    let rotSpeed = ((localRotation * (userData.Days[g].DaySpeed)) / 10) / (localScale + localScalePrevious) * baseSpeed;
+    let rotSpeed = ((localRotation * pow(userData.Days[g].DaySpeed, 2)) / 10) / (localScale + localScalePrevious) * baseSpeed;
     let localMood = map(userData.Days[g].DayMood, 1, 10, 0, 255);
     let localColour = abs((sin(frameCount / (pow(11 - userData.Days[g].DaySpeed, 3)) * 10 + 1) * localMood));
 
@@ -335,11 +334,13 @@ function submitData() {
   }
 
   dissonance = dissonance / gearQuant;
+  print('Dissonance: ' + dissonance);
+  //dissonance = map(pow(dissonance, dissonanceWeighting), 1, pow(10,dissonanceWeighting), 1, 10);
+  //print('Weighted Dissonance: ' + dissonance);
   totalSpeed = totalSpeed / gearQuant;
-  print('Mean Dissonance: ' + dissonance);
   print('Total Mean Speed: ' + totalSpeed);
 
-  
+
 
   Tone.start();
   audCont = true;
@@ -359,9 +360,10 @@ function displayClock() {
   playClockChime();
   resetClock();
 
-  gearHorizScale = createSlider(0, 10, 0, 0);
-  gearHorizScale.position(50, 50);
-  gearHorizScale.size(windowWidth - 100, 30);
+  gearVerScale = createSlider(0, 10, 0, 0);
+  gearVerScale.size(windowWidth - borderDistance, 30);
+  gearVerScale.style('transform', 'rotate(90deg)');
+  gearVerScale.position((-windowWidth / 2) + (borderDistance / 1.5), windowHeight / 2);
 
 }
 
@@ -391,19 +393,18 @@ async function playClockChime() {
 
     setDissonance();
     playSound(shiftVal);
-    // print('Shifted ' + shiftVal + ' semitones');
+    doneChimesCount++
+    print('Chime ' + (doneChimesCount) + ' of ' + chimeQuant + ' Shifted ' + shiftVal + ' semitones');
 
     if (chimeQuant > 12 && chimeQuant - doneChimesCount >= 2) {
 
       setDissonance();
       playSound(shiftVal);
-      //print('Shifted ' + shiftVal + ' semitones');
       doneChimesCount++;
-      
+      print('Chime ' + (doneChimesCount) + ' of ' + chimeQuant + ' Shifted ' + shiftVal + ' semitones');
+
     }
 
-    print('Chime ' + (doneChimesCount + 1) + ' of ' + chimeQuant);
-    doneChimesCount++
 
     if (doneChimesCount >= chimeQuant) clearInterval(interLoop);
 
@@ -438,7 +439,7 @@ function setDissonance() {
       shiftVal = 5;
     } else {
       shiftVal = 7;
-    } 
+    }
 
   } else if (dissonance < 5) {
     if (selector == 0) {
@@ -514,10 +515,8 @@ function setDissonance() {
   // randomises pitch shift up or down
   if (randSign == 0) {
     shiftVal = shiftVal;
-    print('Rand 0: ' + shiftVal);
   } else {
     shiftVal = (0 - shiftVal);
-    print('Rand 1: ' + shiftVal);
   }
 }
 
