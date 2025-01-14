@@ -432,15 +432,30 @@ function setDissonance() {
 
   if (dissonance == 0) {
 
-    if (doneChimesCount % 10 == 0) {
-      shiftVal = 12;
+    if (selector == 0) {
+      shiftVal = 0;
+    } else if (selector <= 1) {
+      shiftVal = 5;
     } else {
-      shiftVal = 5 * doneChimesCount;
-
-    }
+      shiftVal = 7;
+    } 
 
   } else if (dissonance < 5) {
-    print('Selector: ' + selector);
+    if (selector == 0) {
+      shiftVal = 0;
+    } else if (selector <= 1) {
+      shiftVal = 5;
+    } else if (selector <= 3) {
+      shiftVal = 7;
+    } else if (selector <= 5) {
+      shiftVal = 3;
+    } else {
+      shiftVal = 12;
+    }
+
+
+  } else if (dissonance < 6) {
+
     if (selector == 0) {
       shiftVal = 0;
     } else if (selector == 1) {
@@ -449,17 +464,51 @@ function setDissonance() {
       shiftVal = 7;
     } else if (selector == 3) {
       shiftVal = 3;
+    } else if (selector == 4) {
+      shiftVal = 10;
     } else {
       shiftVal = 12;
-    }
+    };
 
 
   } else if (dissonance < 8) {
 
-    shiftVal = random(5, 12);
+    if (selector == 0) {
+      shiftVal = 4;
+    } else if (selector == 1) {
+      shiftVal = 5;
+    } else if (selector == 2) {
+      shiftVal = 7;
+    } else if (selector == 3) {
+      shiftVal = 3;
+    } else if (selector == 4) {
+      shiftVal = 10;
+    } else if (selector == 5) {
+      shiftVal = 9;
+    } else {
+      shiftVal = 12;
+    };
+
+  } else if (dissonance < 9) {
+
+    if (selector == 0) {
+      shiftVal = 4;
+    } else if (selector == 1) {
+      shiftVal = 5;
+    } else if (selector == 2) {
+      shiftVal = 2;
+    } else if (selector == 3) {
+      shiftVal = 3;
+    } else if (selector == 4) {
+      shiftVal = 10;
+    } else if (selector == 5) {
+      shiftVal = 9;
+    } else {
+      shiftVal = 12;
+    };
 
   } else {
-    shiftVal = random(0, 12) * (random(1, 10) / 10);
+    shiftVal = random(0, 23);
   }
 
   // randomises pitch shift up or down
@@ -467,7 +516,7 @@ function setDissonance() {
     shiftVal = shiftVal;
     print('Rand 0: ' + shiftVal);
   } else {
-    shiftVal = 0 - shiftVal;
+    shiftVal = (0 - shiftVal);
     print('Rand 1: ' + shiftVal);
   }
 }
