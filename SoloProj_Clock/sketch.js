@@ -9,7 +9,7 @@ let chimeWav;
 let allowChime = true;
 let doneChimesCount = 0;
 let time;
-let dissonance;
+let dissonance = 0;
 let daySpeedField, dayMoodField, daySigField, dayNoteField, gearHorizScale;
 let submitButton, displayButton;
 let showText = 1;
@@ -17,10 +17,13 @@ let userData;
 let clockhand;
 let pitchShifter;
 let gearDistanceTranslation = 0;
+let shiftVal = 0;
 let totalMood = 0;
 let avgMood = 0;
 let colour = 0
 let gearPosTotal = 0;
+let audCont = false;
+let totalSpeed = 0;
 
 ////// Controls
 
@@ -30,7 +33,7 @@ let motionBlur = 255;
 let gearDistance = 150;
 let fps = 60;
 let baseSpeed = 2;
-let concurrentChimes = 3;
+let concurrentChimes = 6;
 let handDensity = 1; //exponential
 
 
@@ -42,6 +45,7 @@ let handDensity = 1; //exponential
 //Freezes when chiming
 //How to get on new line? Total translation doesn't add per gear, but per frame
 //How to step through?
+//innerWidth
 
 //**************************** */
 
@@ -147,7 +151,7 @@ function windowResized() {
 function drawHand() {
 
   localRotation = localRotation + (60 / frameRate()); //increments rotation whilst accounting for lag
-
+  let posStore = 0;
   for (g = 0; g < gearQuant; g++) {
 
 
@@ -170,9 +174,19 @@ function drawHand() {
 
     gearDistanceTranslation = (gearDistance * (localScalePrevious + localScale)); // set the distance between gears
 
-
+    //g*step count
+    //let pos = 0
+    //add translation to store , chcekc vs width 
+    //keep and update current y
+    //reset stored pos 
 
     translate(gearDistanceTranslation, 0);
+    posStore = posStore + gearDistanceTranslation;
+    if (posStore >= innerWidth) {
+      posStore = posStore - (innerWidth / 50);
+      translate(-posStore, 500);
+      posStore = 0;
+    }
 
     // set rotation speed
     //let rotSpeed = ((localRotation * localRate) / (localScale + localScalePrevious)) * baseSpeed;
@@ -258,10 +272,10 @@ function displayQuestion() {
   submitButton.position(width / 2.3, 400);
   submitButton.mousePressed(submitData);
 
-    let chimeButton = createButton('TEST CHIME');
-    chimeButton.position(width / 8, 400);
-    chimeButton.mousePressed(playClockChime);
-    chimeButton.size(300,30);
+  let chimeButton = createButton('TEST CHIME');
+  chimeButton.position(width / 8, 400);
+  chimeButton.mousePressed(playClockChime);
+  chimeButton.size(300, 30);
 
 }
 
@@ -315,11 +329,20 @@ function submitData() {
   displayButton.mousePressed(displayClock);
 
   for (g = 0; g < gearQuant; g++) {
-    dissonance = dissonance + (10 - userData.Days[g].DayMood);
+    dissonance = dissonance + (10 - userData.Days[g].DayMood); // Ensures dissonance is inverse of mood and gets mean
+    totalSpeed = totalSpeed + (userData.Days[g].DaySpeed); //Mean speed
 
   }
 
+  dissonance = dissonance / gearQuant;
+  totalSpeed = totalSpeed / gearQuant;
+  print('Mean Dissonance: ' + dissonance);
+  print('Total Mean Speed: ' + totalSpeed);
+
+  
+
   Tone.start();
+  audCont = true;
 
 
 }
@@ -343,86 +366,51 @@ function displayClock() {
 }
 
 //********************************** */
+async function playSound(shiftVal) {
 
-function playClockChime() {
-
-
-  for (doneChimesCount = 0; doneChimesCount < 5;) {
-
-    if (millis() - time >= 1000) {
-
-      let shiftVal = doneChimesCount;
-      playSound(shiftVal);
-
-      print('debugChime ' + (doneChimesCount + 1) + ' of ' + 5);
-      time = millis();
-      doneChimesCount++
-    }
-  }
-}
-/*
-for (doneChimesCount; doneChimesCount < chimeQuant;) {
- 
-  let persistCount = 0;
- 
-  let shiftVal = -5;
   let PitchShifter = new Tone.PitchShift(shiftVal).toDestination();
-  let player1 = new Tone.Player('/assets/chime_middleC.wav').connect(PitchShifter);
-  
-  //let player2 = new Tone.Player('/assets/chime_middleC.wav').connect(PitchShifter);
- 
-  if (millis() - time >= 5000 / chimeQuant) {
- 
- 
-      if (persistCount < concurrentChimes) {
- 
-      persistCount++
- 
-    } else {
- 
-      //player1.autostart = false;
-     // player2.autostart = false;
-      persistCount = 0;
- 
-    }
- 
- 
-    //setDissonance(shiftVal);
- 
- 
-    
- 
-    player1.autostart = true;
-    doneChimesCount++;
- 
-    //Plays another chime overlapping the first
-    if (chimeQuant > 12 && chimeQuant - doneChimesCount >= 2) {
- 
-      //player2.autostart = true;
-      doneChimesCount++;
-    }
- 
- 
-    print('Chimed at: ' + chimeQuant + ':00');
-    print('chimes done: ' + doneChimesCount);
-    print('chime quant: ' + chimeQuant);
-    print('persistCount: ' + persistCount);
-    print('Dissonance: ' + dissonance);
- 
-    time = millis();
- 
- 
- 
- 
- 
+  let player = new Tone.Player('/assets/chime_middleC.wav').connect(PitchShifter);
+
+  player.autostart = true;
+
+}
+
+
+///////////////////////////////////////////////////
+
+async function playClockChime() {
+
+  if (audCont == false) {
+    Tone.start();
+    audCont = true;
   }
- 
- 
+
+
+
+  let interLoop = setInterval(function () {
+
+    setDissonance();
+    playSound(shiftVal);
+    // print('Shifted ' + shiftVal + ' semitones');
+
+    if (chimeQuant > 12 && chimeQuant - doneChimesCount >= 2) {
+
+      setDissonance();
+      playSound(shiftVal);
+      //print('Shifted ' + shiftVal + ' semitones');
+      doneChimesCount++;
+      
+    }
+
+    print('Chime ' + (doneChimesCount + 1) + ' of ' + chimeQuant);
+    doneChimesCount++
+
+    if (doneChimesCount >= chimeQuant) clearInterval(interLoop);
+
+  }, (80000 / chimeQuant) / totalSpeed);
+
 }
- 
- 
-}
-*/
+
 
 ////******************* */
 
@@ -436,9 +424,11 @@ function resetClock() {
 
 //******************** */
 
-function setDissonance(shiftVal) {
-  print(shiftVal);
-  let randSign = random(0, 1);
+function setDissonance() {
+
+  shiftVal = 0;
+  let randSign = round(random(0, 1));
+  let selector = round(random(0, 6));
 
   if (dissonance == 0) {
 
@@ -450,8 +440,19 @@ function setDissonance(shiftVal) {
     }
 
   } else if (dissonance < 5) {
+    print('Selector: ' + selector);
+    if (selector == 0) {
+      shiftVal = 0;
+    } else if (selector == 1) {
+      shiftVal = 5;
+    } else if (selector == 2) {
+      shiftVal = 7;
+    } else if (selector == 3) {
+      shiftVal = 3;
+    } else {
+      shiftVal = 12;
+    }
 
-    shiftVal = 5 * doneChimesCount;
 
   } else if (dissonance < 8) {
 
@@ -464,19 +465,12 @@ function setDissonance(shiftVal) {
   // randomises pitch shift up or down
   if (randSign == 0) {
     shiftVal = shiftVal;
+    print('Rand 0: ' + shiftVal);
   } else {
     shiftVal = 0 - shiftVal;
+    print('Rand 1: ' + shiftVal);
   }
 }
 
 //////////////////////////////////////
 
-function playSound(shiftVal) {
-
-  let PitchShifter = new Tone.PitchShift(shiftVal).toDestination();
-  let player = new Tone.Player('/assets/chime_middleC.wav').connect(PitchShifter);
-
-
-  player.autostart = true;
-
-}
