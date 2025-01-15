@@ -14,7 +14,7 @@ let daySpeedField, dayMoodField, daySigField, dayNoteField, gearVerScale;
 let submitButton, displayButton;
 let showText = 1;
 let userData;
-let clockhand;
+let clockhand, clockring, shadow, rusthand, rustRing, plate;
 let pitchShifter;
 let gearDistanceTranslation = 0;
 let shiftVal = 0;
@@ -50,7 +50,12 @@ let handDensity = 1; //exponential
 //**************************** */
 
 function preload() {
-  clockhand = loadImage('/assets/ClockhandV2White_small.png');
+  clockhand = loadImage('/assets/clockhand_gold_small.png');
+  clockring = loadImage('/assets/ring_small.png');
+  shadow = loadImage('/assets/Shadow.png');
+  rusthand = loadImage('/assets/clockhand_rusted_small.png');
+  plate = loadImage('assets/Plate_small.png');
+  rustRing = loadImage('/assets/RingRusted_small.png');
   userData = loadJSON('userData.json');
 
 }
@@ -84,7 +89,7 @@ function setup() {
 
 function draw() {
 
-  background(220, 220, 220, motionBlur);
+  background(200, motionBlur);
 
 
   if (showText == 1) {
@@ -136,6 +141,7 @@ function draw() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+
   if (showText == true) {
     removeElements();
     displayQuestion();
@@ -183,7 +189,7 @@ function drawHand() {
     posStore = posStore + gearDistanceTranslation;
     if (posStore >= innerWidth) {
       posStore = posStore - (innerWidth / 50);
-      translate(-posStore + borderDistance, 500);
+      translate(-posStore + borderDistance, 400);
       posStore = gearDistanceTranslation;
     }
 
@@ -191,11 +197,13 @@ function drawHand() {
     //let rotSpeed = ((localRotation * localRate) / (localScale + localScalePrevious)) * baseSpeed;
 
     let rotSpeed = ((localRotation * pow(userData.Days[g].DaySpeed, 2)) / 10) / (localScale + localScalePrevious) * baseSpeed;
-    let localMood = map(userData.Days[g].DayMood, 1, 10, 0, 255);
-    let localColour = abs((sin(frameCount / (pow(11 - userData.Days[g].DaySpeed, 3)) * 10 + 1) * localMood));
+    //let localMood = map(userData.Days[g].DayMood, 1, 10, 0, 255);
+    //let localColour = abs((sin(frameCount / (pow(11 - userData.Days[g].DaySpeed, 3)) * 10 + 1) * localMood));
 
 
     for (i = 0; i < localHandsCount; i++) {
+
+
 
       push();
 
@@ -204,9 +212,30 @@ function drawHand() {
       angleMode(DEGREES);
 
 
-      textAlign(CENTER);
-      text(localNotes, 0, 150);
+      //contents of if are  drawn first once per gear before scale
+      if (i == 0) {
 
+       
+
+      }
+
+      scale(localScale);
+
+      //contents of if are drawn first once per gear after scale
+      if (i == 0) {
+
+        imageMode(CENTER);
+        image(shadow, 0, 0, 512, 512);
+
+        strokeWeight(0.5);
+        stroke(0, 0, 0, 155);
+
+        //textAlign(CENTER);
+        //text(localNotes, 0, 150);
+        rotateText(0,0,100,localNotes);
+
+
+      }
 
       if (g % 2 == 0) {
         rotate(rotSpeed + (i * 360 / localHandsCount));
@@ -215,30 +244,31 @@ function drawHand() {
         rotate(0 - (rotSpeed + (i * 360 / localHandsCount)));
 
       }
-      strokeWeight(1);
-      stroke(0, 0, 0, 255)
+      imageMode(CORNER);
+      //tint(localColour);
+      if (userData.Days[g].DayMood >= 5) {
+        image(clockhand, 0, 0, 128, 128);
+      } else {
+        image(rusthand, 0, 0, 128, 128);
+      }
 
-      scale(localScale);
-      tint(localColour);
-      image(clockhand, 0, 0);
-
-      //contents of if are only drawn once per gear
+      //contents of if are drawn last once per gear
       if (i + 1 == localHandsCount) {
 
-        fill(255);
-        circle(0, 0, 20);
-        noFill();
-        strokeWeight(18);
-        stroke(localColour, 200);
-        circle(0, 0, 192);
-        strokeWeight(1);
 
+        imageMode(CENTER);
+        if (userData.Days[g].DayMood >= 5) {
+          image(clockring, 0, 0, 128, 128);
+        } else {
+          image(rustRing, 0, 0, 128, 128);
 
-
+        }
 
       }
 
       pop();
+
+
 
 
     }
@@ -522,3 +552,36 @@ function setDissonance() {
 
 //////////////////////////////////////
 
+function rotateText(x, y, radius, txt) {
+    
+  // Split the chars so they can be printed one by one
+  chars = txt.split("")
+
+  // Decide an angle
+  charSpacingAngleDeg = 250;
+
+  // https://p5js.org/reference/#/p5/textAlign
+  textAlign(CENTER, BASELINE)
+  textSize(15)
+  fill('black')
+
+  push()
+
+  // Let's first move to the center of the circle
+  translate(x, y)
+
+  // First rotate half back so that middle char will come in the center
+  rotate(radians(-chars.length * charSpacingAngleDeg / 2))
+
+  for (let i = 0; i < chars.length; i++) {
+      text(chars[i], 0, -radius)
+
+      // Then keep rotating forward per character
+      rotate(radians(charSpacingAngleDeg))
+  }
+
+  // Reset all translations we did since the last push() call
+  // so anything we draw after this isn't affected
+  pop()
+
+}
