@@ -48,6 +48,22 @@
       "DayMood": 6,
       "DaySig": 6,
       "DayNote": "bruh writing is hard"
-    }  
+    },
+    {
+      "DayDate": "Jan 14 2025",
+      "DaySpeed": 7,
+      "DayMood": 5,
+      "DaySig": 3,
+      "DayNote": "yasss clean bedding"
+    },
+    {
+      "DayDate": "Jan 15 2025",
+      "DaySpeed": 6,
+      "DayMood": 5,
+      "DaySig": 3,
+      "DayNote": "clean clean hair",
+      "Yesterday": false,
+      "AutoYesterday": false
+    }
   ]
 }

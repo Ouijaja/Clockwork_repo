@@ -24,6 +24,7 @@ let colour = 0
 let gearPosTotal = 0;
 let audCont = false;
 let totalSpeed = 0;
+let ard, ardConnected = 0;
 
 ////// Controls
 
@@ -40,7 +41,7 @@ let handDensity = 1; //exponential
 
 
 //TODO:
-//!USER DATA SAVE DISABLED FOR DEBUG!
+
 
 //QUESTIONS:
 
@@ -74,7 +75,7 @@ function setup() {
   //chimeWav.disconnect();
   //chimeWav.connect(pitchShifter);
 
-
+  port = createSerial();
 
   displayQuestion();
 
@@ -94,15 +95,38 @@ function draw() {
 
   if (showText == 1) {
     text('How quickly did your day pass, from 1 (lowest) to 10 (highest)?', 50, 50);
-    text("Today's speed: " + daySpeedField.value(), 50, 75);
+    //text("Today's speed: " + daySpeedField.value(), 50, 75);
 
     text('How would you rate your mood today from 1 (lowest) to 10 (highest)?', 50, 100);
-    text("Today's mood: " + dayMoodField.value(), 50, 125);
+    //text("Today's mood: " + dayMoodField.value(), 50, 125);
 
     text('How significant do you feel today was in your life,  from 1 (lowest) to 10 (highest)?', 50, 150);
-    text("Today's significance: " + daySigField.value(), 50, 175);
+    //text("Today's significance: " + daySigField.value(), 50, 175);
 
     text('Would you like to include a short note for the day (under  5 words)?', 50, 300);
+
+if(ardConnected == true){
+    let val = port.readUntil("\n");
+
+
+    text("Today's speed: " + ard, 50, 75);
+    text("Today's mood: " + ard, 50, 125);
+    text("Today's significance: " + ard, 50, 175);
+
+
+  if (val.length > 0) {
+   
+	  ard = val;
+    print(ard);
+
+  }
+}else{
+
+  text("Today's speed: " + daySpeedField.value(), 50, 75);
+  text("Today's mood: " + dayMoodField.value(), 50, 125);
+  text("Today's significance: " + daySigField.value(), 50, 175);
+
+}
 
 
   } else {
@@ -116,19 +140,11 @@ function draw() {
         allowChime = false;
         playClockChime();
         print('clock should chime');
+
+
       }
 
     }
-
-    if (minute() == 2 && second() == 0) {
-      resetClock();
-    }
-
-
-
-
-
-
 
 
   }
@@ -215,7 +231,7 @@ function drawHand() {
       //contents of if are  drawn first once per gear before scale
       if (i == 0) {
 
-       
+
 
       }
 
@@ -232,7 +248,7 @@ function drawHand() {
 
         //textAlign(CENTER);
         //text(localNotes, 0, 150);
-        rotateText(0,0,100,localNotes);
+        rotateText(0, 0, 100, localNotes);
 
 
       }
@@ -301,10 +317,10 @@ function displayQuestion() {
   submitButton.position(width / 2.3, 400);
   submitButton.mousePressed(submitData);
 
-  let chimeButton = createButton('TEST CHIME');
-  chimeButton.position(width / 8, 400);
-  chimeButton.mousePressed(playClockChime);
-  chimeButton.size(300, 30);
+  let arduinoButton = createButton('Connect Arduino');
+  arduinoButton.position(width / 8, 400);
+  arduinoButton.mousePressed(connectArduino);
+  arduinoButton.size(300, 30);
 
 }
 
@@ -329,11 +345,11 @@ function submitData() {
   });
 
 
-  //USER DATA SAVE DISABLED FOR DEBUG
-  /*
-    saveJSON(userData,
-      'userData.json', true);
-  */
+  //USER DATA SAVE 
+
+  saveJSON(userData,
+    'userData.json', true);
+
 
   print('manually replace your userData file with the new one');
 
@@ -418,8 +434,10 @@ async function playClockChime() {
   }
 
 
-
   let interLoop = setInterval(function () {
+
+
+
 
     setDissonance();
     playSound(shiftVal);
@@ -436,9 +454,14 @@ async function playClockChime() {
     }
 
 
-    if (doneChimesCount >= chimeQuant) clearInterval(interLoop);
+    if (doneChimesCount >= chimeQuant) {
+      clearInterval(interLoop);
+      resetClock();
+    }
 
-  }, (80000 / chimeQuant) / totalSpeed);
+  }, ((80000 / chimeQuant) / totalSpeed));
+
+
 
 }
 
@@ -553,7 +576,7 @@ function setDissonance() {
 //////////////////////////////////////
 
 function rotateText(x, y, radius, txt) {
-    
+
   // Split the chars so they can be printed one by one
   chars = txt.split("")
 
@@ -574,14 +597,27 @@ function rotateText(x, y, radius, txt) {
   rotate(radians(-chars.length * charSpacingAngleDeg / 2))
 
   for (let i = 0; i < chars.length; i++) {
-      text(chars[i], 0, -radius)
+    text(chars[i], 0, -radius)
 
-      // Then keep rotating forward per character
-      rotate(radians(charSpacingAngleDeg))
+    // Then keep rotating forward per character
+    rotate(radians(charSpacingAngleDeg))
   }
 
   // Reset all translations we did since the last push() call
   // so anything we draw after this isn't affected
   pop()
+
+}
+
+////////////////////////////////
+
+function connectArduino(){
+  if (!port.opened()) {
+    port.open('Arduino', 9600);
+    ardConnected = true;
+  } else {
+    port.close();
+    ardConnected = false;
+  }
 
 }

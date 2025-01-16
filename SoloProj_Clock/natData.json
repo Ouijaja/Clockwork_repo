@@ -48,6 +48,20 @@
       "DayMood": 6,
       "DaySig": 4,
       "DayNote": "Played Geb, wrote stuff."
+    },
+    {
+      "DayDate": "Jan 14 2025",
+      "DaySpeed": 2,
+      "DayMood": 6,
+      "DaySig": 3,
+      "DayNote": "Booooring, but enjoyable"
+    },
+    {
+      "DayDate": "Jan 15 2025",
+      "DaySpeed": 3,
+      "DayMood": 3,
+      "DaySig": 3,
+      "DayNote": "overslept, uneventful. very tired"
     }
   ]
 }

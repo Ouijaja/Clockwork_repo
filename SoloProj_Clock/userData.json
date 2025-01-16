@@ -5,14 +5,14 @@
       "DaySpeed": 4,
       "DayMood": 6,
       "DaySig": 5,
-      "DayNote": "Visit Evra"
+      "DayNote": "Visited Evra"
     },
     {
       "DayDate": "Nov 28 2024",
       "DaySpeed": 5,
       "DayMood": 5,
       "DaySig": 3,
-      "DayNote": "Return Home"
+      "DayNote": "Returned Home"
     },
     {
       "DayDate": "Nov 29 2024",
@@ -173,7 +173,7 @@
       "DaySpeed": 6,
       "DayMood": 6,
       "DaySig": 3,
-      "DayNote": ""
+      "DayNote": "Christmas"
     },
     {
       "DayDate": "Dec 29 2024",
@@ -272,6 +272,21 @@
       "DayMood": 7,
       "DaySig": 3,
       "DayNote": ""
+    },
+    {
+      "DayDate": "Jan 15 2025",
+      "DaySpeed": 5,
+      "DayMood": 6,
+      "DaySig": 1,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Jan 16 2025",
+      "DaySpeed": 4,
+      "DayMood": 6,
+      "DaySig": 1,
+      "DayNote": ""
+
     }
   ]
 }
