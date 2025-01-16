@@ -33,8 +33,8 @@ let motionBlur = 255; // 255 least, 0 most
 let borderDistance = 200;
 let gearDistance = 150;
 let fps = 60;
-let baseSpeed = 0.5;
-let concurrentChimes = 6;
+let baseSpeed = 1.1;
+//let concurrentChimes = 6;
 let handDensity = 1; //exponential
 //let dissonanceWeighting = 1.5; //exponent for weighting dissonance
 
@@ -384,6 +384,7 @@ function submitData() {
   //dissonance = map(pow(dissonance, dissonanceWeighting), 1, pow(10,dissonanceWeighting), 1, 10);
   //print('Weighted Dissonance: ' + dissonance);
   totalSpeed = totalSpeed / gearQuant;
+  baseSpeed = baseSpeed * (totalSpeed/10);
   print('Total Mean Speed: ' + totalSpeed);
 
 
