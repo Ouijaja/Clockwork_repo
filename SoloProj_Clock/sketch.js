@@ -1,5 +1,5 @@
 
-let handsQuant = 15;
+//let handsQuant = 15;
 let gearQuant = 2;
 let gearIndex;
 let localRotation = 0;
@@ -185,7 +185,7 @@ function drawHand() {
   for (g = 0; g < gearQuant; g++) {
 
 
-    let localHandsCount = round(pow(10 - userData.Days[g].DaySpeed, handDensity)) //sets the number of hands according to the day speed
+    let localHandsCount = constrain(round(pow(10 - userData.Days[g].DaySpeed, handDensity)), 1,100); //sets the number of hands according to the day speed
     let localNotes = userData.Days[g].DayNote //gets the text for notes
     let localScale = pow(userData.Days[g].DaySig, 0.5) / 2 //sets the scale accoring to day significance
 
@@ -365,7 +365,7 @@ function submitData() {
 
 
 
-  handsQuant = pow(daySpeedField.value(), 2);
+  //handsQuant = pow(daySpeedField.value(), 2);
   gearQuant = (userData.Days.length);
 
   for (g = 0; g < gearQuant; g++) {
@@ -591,34 +591,34 @@ function setDissonance() {
 function rotateText(x, y, radius, txt) {
 
   // Split the chars so they can be printed one by one
-  chars = txt.split("")
+  chars = txt.split("");
 
   // Decide an angle
   charSpacingAngleDeg = 250;
 
   // https://p5js.org/reference/#/p5/textAlign
-  textAlign(CENTER, BASELINE)
-  textSize(15)
-  fill('black')
+  textAlign(CENTER, BASELINE);
+  textSize(15);
+  fill(101,51,51);
 
-  push()
+  push();
 
   // Let's first move to the center of the circle
   translate(x, y)
 
   // First rotate half back so that middle char will come in the center
-  rotate(radians(-chars.length * charSpacingAngleDeg / 2))
+  rotate(radians(-chars.length * charSpacingAngleDeg / 2));
 
   for (let i = 0; i < chars.length; i++) {
-    text(chars[i], 0, -radius)
+    text(chars[i], 0, -radius);
 
     // Then keep rotating forward per character
-    rotate(radians(charSpacingAngleDeg))
+    rotate(radians(charSpacingAngleDeg));
   }
 
   // Reset all translations we did since the last push() call
   // so anything we draw after this isn't affected
-  pop()
+  pop();
 
 }
 
