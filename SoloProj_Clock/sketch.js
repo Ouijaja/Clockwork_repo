@@ -39,7 +39,6 @@ let handDensity = 1; //exponential
 //let dissonanceWeighting = 1.5; //exponent for weighting dissonance
 
 
-
 //TODO:
 
 
@@ -90,7 +89,7 @@ function setup() {
 
 function draw() {
 
-  background(200, motionBlur);
+  background(220, 219, 206, motionBlur);
 
 
   if (showText == 1) {
@@ -105,28 +104,28 @@ function draw() {
 
     text('Would you like to include a short note for the day (under  5 words)?', 50, 300);
 
-if(ardConnected == true){
-    let val = port.readUntil("\n");
+    if (ardConnected == true) {
+      let val = port.readUntil("\n");
 
 
-    text("Today's speed: " + ard, 50, 75);
-    text("Today's mood: " + ard, 50, 125);
-    text("Today's significance: " + ard, 50, 175);
+      text("Today's speed: " + ard, 50, 75);
+      text("Today's mood: " + ard, 50, 125);
+      text("Today's significance: " + ard, 50, 175);
 
 
-  if (val.length > 0) {
-   
-	  ard = val;
-    print(ard);
+      if (val.length > 0) {
 
-  }
-}else{
+        ard = val;
+        print(ard);
 
-  text("Today's speed: " + daySpeedField.value(), 50, 75);
-  text("Today's mood: " + dayMoodField.value(), 50, 125);
-  text("Today's significance: " + daySigField.value(), 50, 175);
+      }
+    } else {
 
-}
+      text("Today's speed: " + daySpeedField.value(), 50, 75);
+      text("Today's mood: " + dayMoodField.value(), 50, 125);
+      text("Today's significance: " + daySigField.value(), 50, 175);
+
+    }
 
 
   } else {
@@ -156,11 +155,21 @@ if(ardConnected == true){
 
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+  resizeCanvas(innerWidth, innerHeight);
 
   if (showText == true) {
     removeElements();
     displayQuestion();
+  } else {
+    removeElements(gearVerScale);
+
+    //gearVerScale = createSlider(0, 10, 0, 0);
+    //gearVerScale.size(innerHeight/2, 30);
+    //gearVerScale.position(-350 + innerHeight/2, innerHeight/2);
+
+    //gearVerScale.style('transform', 'rotate(90deg)');
+
+
   }
 }
 
@@ -186,6 +195,7 @@ function drawHand() {
 
     if (g == 0) {
       localRate = 1;
+      posStore = borderDistance;
 
     } else {
       localRate = userData.Days[g - 1].DaySpeed / localHandsCount //sets gear ratio to neighbour
@@ -203,9 +213,9 @@ function drawHand() {
 
     translate(gearDistanceTranslation, 0);
     posStore = posStore + gearDistanceTranslation;
-    if (posStore >= innerWidth) {
+    if (posStore + (borderDistance / 2) >= innerWidth) {
       posStore = posStore - (innerWidth / 50);
-      translate(-posStore + borderDistance, 400);
+      translate(borderDistance * 1.2 - posStore, 400);
       posStore = gearDistanceTranslation;
     }
 
@@ -384,7 +394,7 @@ function submitData() {
   //dissonance = map(pow(dissonance, dissonanceWeighting), 1, pow(10,dissonanceWeighting), 1, 10);
   //print('Weighted Dissonance: ' + dissonance);
   totalSpeed = totalSpeed / gearQuant;
-  baseSpeed = baseSpeed * (totalSpeed/10);
+  baseSpeed = baseSpeed * (totalSpeed / 10);
   print('Total Mean Speed: ' + totalSpeed);
 
 
@@ -572,6 +582,8 @@ function setDissonance() {
   } else {
     shiftVal = (0 - shiftVal);
   }
+
+
 }
 
 //////////////////////////////////////
@@ -612,7 +624,7 @@ function rotateText(x, y, radius, txt) {
 
 ////////////////////////////////
 
-function connectArduino(){
+function connectArduino() {
   if (!port.opened()) {
     port.open('Arduino', 9600);
     ardConnected = true;

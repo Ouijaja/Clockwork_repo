@@ -286,7 +286,20 @@
       "DayMood": 6,
       "DaySig": 1,
       "DayNote": ""
-
+    },
+    {
+      "DayDate": "Jan 17 2025",
+      "DaySpeed": 8,
+      "DayMood": 8,
+      "DaySig": 4,
+      "DayNote": "Jamie to Visit"
+    },
+    {
+      "DayDate": "Jan 18 2025",
+      "DaySpeed": 8,
+      "DayMood": 7,
+      "DaySig": 2,
+      "DayNote": ""
     }
   ]
 }
