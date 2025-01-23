@@ -242,7 +242,7 @@
       "DayDate": "Jan 09 2025",
       "DaySpeed": 8,
       "DayMood": 7,
-      "DaySig": 3,
+      "DaySig": 4,
       "DayNote": "Dave's Funeral"
     },
     {
@@ -298,6 +298,34 @@
       "DayDate": "Jan 18 2025",
       "DaySpeed": 8,
       "DayMood": 7,
+      "DaySig": 2,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Jan 19 2025",
+      "DaySpeed": 8,
+      "DayMood": 6,
+      "DaySig": 1,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Jan 20 2025",
+      "DaySpeed": 7,
+      "DayMood": 6,
+      "DaySig": 1,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Jan 21 2025",
+      "DaySpeed": 8,
+      "DayMood": 7,
+      "DaySig": 2,
+      "DayNote": ""
+    },
+    {
+      "DayDate": "Jan 22 2025",
+      "DaySpeed": 8,
+      "DayMood": 8,
       "DaySig": 2,
       "DayNote": ""
     }
