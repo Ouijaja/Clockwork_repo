@@ -54,7 +54,7 @@ function preload() {
   clockring = loadImage('/assets/ring_small.png');
   shadow = loadImage('/assets/Shadow.png');
   rusthand = loadImage('/assets/clockhand_rusted_small.png');
-  plate = loadImage('assets/Plate_small.png');
+  //plate = loadImage('assets/Plate_small.png');
   rustRing = loadImage('/assets/RingRusted_small.png');
   userData = loadJSON('userData.json');
 
