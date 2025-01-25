@@ -180,7 +180,7 @@ function windowResized() {
 
 function drawHand() {
 
-  localRotation = localRotation + (60 / frameRate()); //increments rotation whilst accounting for lag
+  localRotation = localRotation + (fps / frameRate()); //increments rotation whilst accounting for lag
   let posStore = 0;
   for (g = 0; g < gearQuant; g++) {
 
@@ -588,6 +588,7 @@ function setDissonance() {
 
 //////////////////////////////////////
 
+//Function from https://editor.p5js.org/Arkimedz/sketches/0VHgrQruB
 function rotateText(x, y, radius, txt) {
 
   // Split the chars so they can be printed one by one
@@ -596,7 +597,6 @@ function rotateText(x, y, radius, txt) {
   // Decide an angle
   charSpacingAngleDeg = 250;
 
-  // https://p5js.org/reference/#/p5/textAlign
   textAlign(CENTER, BASELINE);
   textSize(15);
   fill(101,51,51);
