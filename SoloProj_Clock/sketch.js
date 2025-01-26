@@ -37,6 +37,7 @@ let baseSpeed = 1.1;
 //let concurrentChimes = 6;
 let handDensity = 1; //exponential
 //let dissonanceWeighting = 1.5; //exponent for weighting dissonance
+let scaleWeight = 0.55; //exponent for weighting scale
 
 
 //TODO:
@@ -187,7 +188,7 @@ function drawHand() {
 
     let localHandsCount = constrain(round(pow(10 - userData.Days[g].DaySpeed, handDensity)), 1,100); //sets the number of hands according to the day speed
     let localNotes = userData.Days[g].DayNote //gets the text for notes
-    let localScale = pow(userData.Days[g].DaySig, 0.5) / 2 //sets the scale accoring to day significance
+    let localScale = pow(userData.Days[g].DaySig, scaleWeight) / 2 //sets the scale accoring to day significance
 
     //sets condiditions for first gear differently to subsequent gears
 
